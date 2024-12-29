@@ -8,6 +8,7 @@ pub mod perpetual_details;
 pub mod price_book;
 pub mod product;
 pub mod product_book;
+pub mod product_type;
 pub mod products;
 pub mod server_time;
 pub mod test;

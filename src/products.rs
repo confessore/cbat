@@ -1,6 +1,6 @@
 use serde_derive::Deserialize;
 
-use crate::{client::Client, product::Product};
+use crate::{client::Client, product::Product, product_type::ProductType};
 
 #[derive(Debug, Deserialize)]
 pub struct Products {
@@ -12,7 +12,7 @@ impl Products {
         client: &Client<'_>,
         limit: Option<u32>,
         offset: Option<u32>,
-        product_type: Option<String>,
+        product_type: Option<ProductType>,
         products_ids: Option<Vec<String>>,
         contract_expiry_type: Option<String>,
         expiring_contract_status: Option<String>,

@@ -1,3 +1,5 @@
+use crate::product_type::ProductType;
+
 #[cfg(test)]
 
 const EXAMPLE: &str = "example";
@@ -48,6 +50,6 @@ pub async fn products_test() {
     use crate::{client::Client, products::Products};
     let client = Client::new(EXAMPLE);
     let products =
-        Products::list_public_products(&client, Some(1), None, None, None, None, None, None).await;
+        Products::list_public_products(&client, Some(1), None, Some(ProductType::Spot), None, None, None, None).await;
     assert_eq!(products.is_ok(), true);
 }
