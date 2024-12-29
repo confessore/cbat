@@ -1,4 +1,7 @@
-use crate::{contract_expiry_type::ContractExpiryType, expiring_contract_status::ExpiringContractStatus, product_type::ProductType};
+use crate::{
+    contract_expiry_type::ContractExpiryType, expiring_contract_status::ExpiringContractStatus,
+    product_type::ProductType, server_time::ServerTime,
+};
 
 #[cfg(test)]
 
@@ -49,7 +52,36 @@ pub async fn server_time_test() {
 pub async fn products_test() {
     use crate::{client::Client, products::Products};
     let client = Client::new(EXAMPLE);
-    let products =
-        Products::list_public_products(&client, Some(1), None, Some(ProductType::Future), None, Some(ContractExpiryType::Expiring), Some(ExpiringContractStatus::Unexpired), None).await;
+    let products = Products::list_public_products(
+        &client,
+        Some(1),
+        None,
+        Some(ProductType::Future),
+        None,
+        Some(ContractExpiryType::Expiring),
+        Some(ExpiringContractStatus::Unexpired),
+        None,
+    )
+    .await;
+    assert_eq!(products.is_ok(), true);
+}
+
+#[tokio::test]
+
+pub async fn product_candles_test() {
+    use crate::{client::Client, granularity::Granularity, product_candles::ProductCandles};
+    let client = Client::new(EXAMPLE);
+    let server_time_result = ServerTime::get_public_server_time(&client).await;
+    let server_time = server_time_result.unwrap();
+    let start_end = server_time.iso.unwrap();
+    let products = ProductCandles::get_public_product_candles(
+        &client,
+        "BTC-USD",
+        &start_end,
+        &start_end,
+        Granularity::OneMinute,
+        Some(1),
+    )
+    .await;
     assert_eq!(products.is_ok(), true);
 }

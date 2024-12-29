@@ -19,9 +19,9 @@ async fn main() -> Result<(), Error> {
     //let product_book = ProductBook::get_public_product_book(&client, "BTC-USD", Some(10), None).await?;
     //println!("{:#?}", product_book);
 
-    let market_trades =
-        MarketTrades::get_public_market_trades(&client, "BTC-USD", 10, None, None).await?;
-    println!("{:#?}", market_trades);
+    //let market_trades =
+    //MarketTrades::get_public_market_trades(&client, "BTC-USD", 10, None, None).await?;
+    //println!("{:#?}", market_trades);
     // Send a GET request
     //let response = client.get(url).await?;
 

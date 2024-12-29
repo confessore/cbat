@@ -5,7 +5,7 @@ pub enum ExpiringContractStatus {
     Unknown,
     Unexpired,
     Expired,
-    All
+    All,
 }
 
 impl Display for ExpiringContractStatus {

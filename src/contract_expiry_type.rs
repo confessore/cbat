@@ -4,7 +4,7 @@ use std::fmt::{Display, Formatter, Result};
 pub enum ContractExpiryType {
     Unknown,
     Expiring,
-    Perpetual
+    Perpetual,
 }
 
 impl Display for ContractExpiryType {
