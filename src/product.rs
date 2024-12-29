@@ -45,7 +45,7 @@ pub struct Product {
     pub approximate_quote_24h_volume: Option<String>,
     pub future_product_details: Option<FutureProductDetails>,
     pub contract_display_name: Option<String>,
-    pub time_to_expiry_ms: Option<i64>,
+    pub time_to_expiry_ms: Option<u64>,
     pub non_crypto: Option<bool>,
     pub contract_expiry_name: Option<String>,
     pub twenty_four_by_seven: Option<bool>,
@@ -53,14 +53,14 @@ pub struct Product {
 
 impl Product {
     pub async fn get_public_product(
-        client: &Client,
+        client: &Client<'_>,
         product_id: &str,
     ) -> Result<Product, reqwest::Error> {
-        let url = &format!("{}{}", PUBLIC_PRODUCT_URL, product_id);
+        let url = &format!("{}/{}", PUBLIC_PRODUCT_URL, product_id);
         let response = client.get(url).await?;
         let product: Product = response.json().await?;
         Ok(product)
     }
 }
 
-const PUBLIC_PRODUCT_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products/";
+const PUBLIC_PRODUCT_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products";

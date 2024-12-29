@@ -11,7 +11,7 @@ pub struct ServerTime {
 }
 
 impl ServerTime {
-    pub async fn get_public_server_time(client: &Client) -> Result<ServerTime, reqwest::Error> {
+    pub async fn get_public_server_time(client: &Client<'_>) -> Result<ServerTime, reqwest::Error> {
         let response = client
             .get("https://api.coinbase.com/api/v3/brokerage/time")
             .await?;

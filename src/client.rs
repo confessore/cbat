@@ -1,10 +1,12 @@
-pub struct Client {
+pub struct Client<'a> {
+    pub name: &'a str,
     client: reqwest::Client,
 }
 
-impl Client {
-    pub fn new() -> Client {
+impl<'a> Client<'a> {
+    pub fn new(name: &'a str) -> Client<'a> {
         Client {
+            name,
             client: reqwest::Client::new(),
         }
     }

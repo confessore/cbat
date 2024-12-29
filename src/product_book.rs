@@ -13,9 +13,9 @@ pub struct ProductBook {
 
 impl ProductBook {
     pub async fn get_public_product_book(
-        client: &Client,
+        client: &Client<'_>,
         product_id: &str,
-        limit: Option<i32>,
+        limit: Option<u32>,
         aggregation_price_increment: Option<&str>,
     ) -> Result<ProductBook, reqwest::Error> {
         let limit = match limit {
