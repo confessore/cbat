@@ -1,7 +1,8 @@
 use serde_derive::Deserialize;
 
 use crate::{
-    client::Client, fcm_trading_session_details::FCMTradingSessionDetails,
+    client::{create_jwt, Client},
+    fcm_trading_session_details::FCMTradingSessionDetails,
     future_product_details::FutureProductDetails,
 };
 
@@ -57,10 +58,13 @@ impl Product {
         product_id: &str,
     ) -> Result<Product, reqwest::Error> {
         let url = &format!("{}/{}", PUBLIC_PRODUCT_URL, product_id);
-        let response = client.get(url).await?;
+        let response = client
+            .get_auth(url, &create_jwt("GET", PUBLIC_PRODUCT_ENDPOINT))
+            .await?;
         let product: Product = response.json().await?;
         Ok(product)
     }
 }
 
 const PUBLIC_PRODUCT_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products";
+const PUBLIC_PRODUCT_ENDPOINT: &str = "/api/v3/brokerage/market/products";

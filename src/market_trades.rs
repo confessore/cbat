@@ -1,6 +1,9 @@
 use serde_derive::Deserialize;
 
-use crate::{client::Client, trade::Trade};
+use crate::{
+    client::{create_jwt, Client},
+    trade::Trade,
+};
 
 #[derive(Debug, Deserialize)]
 pub struct MarketTrades {
@@ -29,10 +32,13 @@ impl MarketTrades {
             "{}{}/ticker?limit={}{}{}",
             PUBLIC_MARKET_TRADES_URL, product_id, limit, start, end
         );
-        let response = client.get(url).await?;
+        let response = client
+            .get_auth(url, &create_jwt("GET", PUBLIC_MARKET_TRADES_ENDPOINT))
+            .await?;
         let market_trades: MarketTrades = response.json().await?;
         Ok(market_trades)
     }
 }
 
 const PUBLIC_MARKET_TRADES_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products/";
+const PUBLIC_MARKET_TRADES_ENDPOINT: &str = "/api/v3/brokerage/market/products/ticker";

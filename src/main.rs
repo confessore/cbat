@@ -1,6 +1,6 @@
 use cbat_rs::{
-    client::Client, market_trades::MarketTrades, product::Product, product_book::ProductBook,
-    server_time::ServerTime,
+    accounts::Accounts, client::Client, market_trades::MarketTrades, product::Product,
+    product_book::ProductBook, server_time::ServerTime,
 };
 use reqwest::Error;
 use tokio;
@@ -20,11 +20,12 @@ async fn main() -> Result<(), Error> {
     //println!("{:#?}", product_book);
 
     //let market_trades =
-    //MarketTrades::get_public_market_trades(&client, "BTC-USD", 10, None, None).await?;
+    //    MarketTrades::get_public_market_trades(&client, "BTC-USD", 10, None, None).await?;
     //println!("{:#?}", market_trades);
     // Send a GET request
     //let response = client.get(url).await?;
-
+    let accounts = Accounts::list_accounts(&client).await?;
+    println!("{:#?}", accounts);
     // Check if the request was successful
     /*if response.status().is_success() {
         // Parse the response as JSON

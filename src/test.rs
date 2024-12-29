@@ -45,7 +45,11 @@ pub async fn server_time_test() {
 
 #[tokio::test]
 pub async fn products_test() {
-    use crate::{client::Client, products::Products, product_type::ProductType, contract_expiry_type::ContractExpiryType, expiring_contract_status::ExpiringContractStatus};
+    use crate::{
+        client::Client, contract_expiry_type::ContractExpiryType,
+        expiring_contract_status::ExpiringContractStatus, product_type::ProductType,
+        products::Products,
+    };
     let client = Client::new(EXAMPLE);
     let products = Products::list_public_products(
         &client,
@@ -64,7 +68,10 @@ pub async fn products_test() {
 #[tokio::test]
 
 pub async fn product_candles_test() {
-    use crate::{client::Client, granularity::Granularity, product_candles::ProductCandles, server_time::ServerTime};
+    use crate::{
+        client::Client, granularity::Granularity, product_candles::ProductCandles,
+        server_time::ServerTime,
+    };
     let client = Client::new(EXAMPLE);
     let server_time_result = ServerTime::get_public_server_time(&client).await;
     let server_time = server_time_result.unwrap();
@@ -79,4 +86,12 @@ pub async fn product_candles_test() {
     )
     .await;
     assert_eq!(products.is_ok(), true);
+}
+
+#[tokio::test]
+pub async fn accounts_test() {
+    use crate::{accounts::Accounts, client::Client};
+    let client = Client::new(EXAMPLE);
+    let account = Accounts::list_accounts(&client).await;
+    assert_eq!(account.is_ok(), true);
 }
