@@ -1,4 +1,4 @@
-use crate::product_type::ProductType;
+use crate::{contract_expiry_type::ContractExpiryType, expiring_contract_status::ExpiringContractStatus, product_type::ProductType};
 
 #[cfg(test)]
 
@@ -50,6 +50,6 @@ pub async fn products_test() {
     use crate::{client::Client, products::Products};
     let client = Client::new(EXAMPLE);
     let products =
-        Products::list_public_products(&client, Some(1), None, Some(ProductType::Spot), None, None, None, None).await;
+        Products::list_public_products(&client, Some(1), None, Some(ProductType::Future), None, Some(ContractExpiryType::Expiring), Some(ExpiringContractStatus::Unexpired), None).await;
     assert_eq!(products.is_ok(), true);
 }

@@ -1,6 +1,6 @@
 use serde_derive::Deserialize;
 
-use crate::{client::Client, product::Product, product_type::ProductType};
+use crate::{client::Client, contract_expiry_type::ContractExpiryType, expiring_contract_status::ExpiringContractStatus, product::Product, product_type::ProductType};
 
 #[derive(Debug, Deserialize)]
 pub struct Products {
@@ -14,8 +14,8 @@ impl Products {
         offset: Option<u32>,
         product_type: Option<ProductType>,
         products_ids: Option<Vec<String>>,
-        contract_expiry_type: Option<String>,
-        expiring_contract_status: Option<String>,
+        contract_expiry_type: Option<ContractExpiryType>,
+        expiring_contract_status: Option<ExpiringContractStatus>,
         get_all_products: Option<bool>,
     ) -> Result<Products, reqwest::Error> {
         let mut query_params = Vec::new();
