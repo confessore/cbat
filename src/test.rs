@@ -1,8 +1,3 @@
-use crate::{
-    contract_expiry_type::ContractExpiryType, expiring_contract_status::ExpiringContractStatus,
-    product_type::ProductType, server_time::ServerTime,
-};
-
 #[cfg(test)]
 
 const EXAMPLE: &str = "example";
@@ -50,7 +45,7 @@ pub async fn server_time_test() {
 
 #[tokio::test]
 pub async fn products_test() {
-    use crate::{client::Client, products::Products};
+    use crate::{client::Client, products::Products, product_type::ProductType, contract_expiry_type::ContractExpiryType, expiring_contract_status::ExpiringContractStatus};
     let client = Client::new(EXAMPLE);
     let products = Products::list_public_products(
         &client,
@@ -69,7 +64,7 @@ pub async fn products_test() {
 #[tokio::test]
 
 pub async fn product_candles_test() {
-    use crate::{client::Client, granularity::Granularity, product_candles::ProductCandles};
+    use crate::{client::Client, granularity::Granularity, product_candles::ProductCandles, server_time::ServerTime};
     let client = Client::new(EXAMPLE);
     let server_time_result = ServerTime::get_public_server_time(&client).await;
     let server_time = server_time_result.unwrap();
