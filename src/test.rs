@@ -122,3 +122,29 @@ pub async fn product_book_test() {
     let price_books = ApiProducts::get_product_book(&client, "BTC-USD", Some(1), None).await;
     assert_eq!(price_books.is_ok(), true);
 }
+
+#[tokio::test]
+pub async fn products_test() {
+    use crate::{ client::Client, api_products::ApiProducts };
+    let client = Client::new(EXAMPLE);
+    let products = ApiProducts::list_products(
+        &client,
+        Some(1),
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None
+    ).await;
+    assert_eq!(products.is_ok(), true);
+}
+
+#[tokio::test]
+pub async fn product_test() {
+    use crate::{ client::Client, api_products::ApiProducts };
+    let client = Client::new(EXAMPLE);
+    let products = ApiProducts::get_product(&client, "BTC-USD", None).await;
+    assert_eq!(products.is_ok(), true);
+}

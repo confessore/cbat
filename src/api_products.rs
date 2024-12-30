@@ -1,4 +1,12 @@
-use crate::{ client::{ create_jwt, Client }, http_method::HttpMethod, price_books::PriceBooks };
+use crate::{
+    client::{ create_jwt, Client },
+    contract_expiry_type::{ self, ContractExpiryType },
+    expiring_contract_status::{ self, ExpiringContractStatus },
+    http_method::HttpMethod,
+    price_books::PriceBooks,
+    product::{ self, Product },
+    products::Products,
+};
 
 pub struct ApiProducts;
 
@@ -56,9 +64,82 @@ impl ApiProducts {
         let price_books: PriceBooks = response.json().await?;
         Ok(price_books)
     }
+
+    pub async fn list_products(
+        client: &Client<'_>,
+        limit: Option<u32>,
+        offset: Option<u32>,
+        product_type: Option<&str>,
+        product_ids: Option<Vec<&str>>,
+        contract_expiry_type: Option<ContractExpiryType>,
+        expiring_contract_status: Option<ExpiringContractStatus>,
+        get_tradability_status: Option<bool>,
+        get_all_products: Option<bool>
+    ) -> Result<Products, reqwest::Error> {
+        let mut query_params = Vec::new();
+        if let Some(limit) = limit {
+            query_params.push(format!("limit={}", limit));
+        }
+        if let Some(offset) = offset {
+            query_params.push(format!("offset={}", offset));
+        }
+        if let Some(product_type) = product_type {
+            query_params.push(format!("product_type={}", product_type));
+        }
+        if let Some(product_ids) = product_ids {
+            for product_id in product_ids {
+                query_params.push(format!("product_ids={}", product_id));
+            }
+        }
+        if let Some(contract_expiry_type) = contract_expiry_type {
+            query_params.push(format!("contract_expiry_type={}", contract_expiry_type));
+        }
+        if let Some(expiring_contract_status) = expiring_contract_status {
+            query_params.push(format!("expiring_contract_status={}", expiring_contract_status));
+        }
+        if let Some(get_tradability_status) = get_tradability_status {
+            query_params.push(format!("get_tradability_status={}", get_tradability_status));
+        }
+        if let Some(get_all_products) = get_all_products {
+            query_params.push(format!("get_all_products={}", get_all_products));
+        }
+        let query_string = if query_params.is_empty() {
+            String::new()
+        } else {
+            format!("?{}", query_params.join("&"))
+        };
+        let url = &format!("{}{}", PRODUCTS_URLS, query_string);
+        let response = client.get_auth(
+            url,
+            &create_jwt(HttpMethod::Get.as_str(), PRODUCTS_ENDPOINT)
+        ).await?;
+        let products: Products = response.json().await?;
+        Ok(products)
+    }
+
+    pub async fn get_product(
+        client: &Client<'_>,
+        product_id: &str,
+        get_tradability_status: Option<bool>
+    ) -> Result<Product, reqwest::Error> {
+        let get_tradability_status = match get_tradability_status {
+            Some(get_tradability_status) =>
+                &format!("?get_tradability_status={}", get_tradability_status),
+            None => "",
+        };
+        let url = &format!("{}/{}{}", PRODUCTS_URLS, product_id, get_tradability_status);
+        let response = client.get_auth(
+            url,
+            &create_jwt(HttpMethod::Get.as_str(), &format!("{}/{}", PRODUCTS_ENDPOINT, product_id))
+        ).await?;
+        let products: Product = response.json().await?;
+        Ok(products)
+    }
 }
 
 const BEST_BID_ASK_URL: &str = "https://api.coinbase.com/api/v3/brokerage/best_bid_ask";
 const BEST_BID_ASK_ENDPOINT: &str = "/api/v3/brokerage/best_bid_ask";
 const PRODUCT_BOOK_URL: &str = "https://api.coinbase.com/api/v3/brokerage/product_book";
 const PRODUCT_BOOK_ENDPOINT: &str = "/api/v3/brokerage/product_book";
+const PRODUCTS_URLS: &str = "https://api.coinbase.com/api/v3/brokerage/products";
+const PRODUCTS_ENDPOINT: &str = "/api/v3/brokerage/products";
