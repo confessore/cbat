@@ -4,20 +4,6 @@ use rand::Rng;
 use sec1::{ pkcs8::LineEnding, DecodeEcPrivateKey };
 use serde::Serialize;
 
-use crate::{
-    accounts::Accounts,
-    contract_expiry_type::ContractExpiryType,
-    expiring_contract_status::ExpiringContractStatus,
-    granularity::Granularity,
-    price_books::PriceBooks,
-    product::Product,
-    product_book::ProductBook,
-    product_candles::ProductCandles,
-    product_type::ProductType,
-    products::Products,
-    server_time::ServerTime,
-};
-
 pub struct Client<'a> {
     pub name: &'a str,
     client: reqwest::Client,
@@ -115,5 +101,5 @@ fn from_sec1_pem(pem: &str) -> String {
     pem.to_string()
 }
 
-const PROTOCOL: &str = "https://";
+const _PROTOCOL: &str = "https://";
 const BASE_URL: &str = "api.coinbase.com";

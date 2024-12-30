@@ -1,11 +1,4 @@
-use cbat_rs::{
-    accounts::Accounts,
-    client::Client,
-    market_trades::MarketTrades,
-    product::Product,
-    product_book::ProductBook,
-    server_time::ServerTime,
-};
+use cbat_rs::client::Client;
 use reqwest::Error;
 use tokio;
 
@@ -15,7 +8,7 @@ async fn main() -> Result<(), Error> {
     //let url = "https://api.coinbase.com/api/v3/brokerage/market/products/BTC-USD";
 
     // Create a reqwest client
-    let client = Client::new("example");
+    let _client = Client::new("example");
     //let product = Product::get_public_product(&client, "BTC-USD").await?;
     //println!("{:#?}", product);
     //let server_time = ServerTime::get_public_server_time(&client).await?;

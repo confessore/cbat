@@ -1,12 +1,6 @@
 use serde_derive::Deserialize;
 
-use crate::{
-    client::Client,
-    contract_expiry_type::ContractExpiryType,
-    expiring_contract_status::ExpiringContractStatus,
-    product::Product,
-    product_type::ProductType,
-};
+use crate::product::Product;
 
 #[derive(Debug, Deserialize)]
 pub struct Products {
