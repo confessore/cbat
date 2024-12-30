@@ -16,7 +16,7 @@ impl Products {
         limit: Option<u32>,
         offset: Option<u32>,
         product_type: Option<ProductType>,
-        products_ids: Option<Vec<String>>,
+        product_ids: Option<Vec<&str>>,
         contract_expiry_type: Option<ContractExpiryType>,
         expiring_contract_status: Option<ExpiringContractStatus>,
         get_all_products: Option<bool>,
@@ -35,8 +35,8 @@ impl Products {
             query_params.push(format!("product_type={}", product_type));
         }
 
-        if let Some(products_ids) = products_ids {
-            for product_id in products_ids {
+        if let Some(product_ids) = product_ids {
+            for product_id in product_ids {
                 query_params.push(format!("product_ids={}", product_id));
             }
         }

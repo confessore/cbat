@@ -1,3 +1,7 @@
+use chrono::{DateTime, Utc};
+
+use crate::price_books::PriceBooks;
+
 #[cfg(test)]
 
 const EXAMPLE: &str = "example";
@@ -70,17 +74,17 @@ pub async fn products_test() {
 pub async fn product_candles_test() {
     use crate::{
         client::Client, granularity::Granularity, product_candles::ProductCandles,
-        server_time::ServerTime,
     };
     let client = Client::new(EXAMPLE);
-    let server_time_result = ServerTime::get_public_server_time(&client).await;
-    let server_time = server_time_result.unwrap();
-    let start_end = server_time.iso.unwrap();
+    let current_time: DateTime<Utc> = Utc::now();
+    let epoch_time = current_time.timestamp();
+    let start = epoch_time - 10_000;
+    let end = epoch_time + 10_000;
     let products = ProductCandles::get_public_product_candles(
         &client,
         "BTC-USD",
-        &start_end,
-        &start_end,
+        &start.to_string(),
+        &end.to_string(),
         Granularity::OneMinute,
         Some(1),
     )
@@ -104,4 +108,12 @@ pub async fn account_test() {
     let account_uuid = &accounts.accounts.unwrap()[0].uuid;
     let accounts = Accounts::get_account(&client, &account_uuid).await;
     assert_eq!(accounts.is_ok(), true);
+}
+
+#[tokio::test]
+pub async fn best_bid_ask_test() {
+    use crate::{client::Client, price_books::PriceBooks};
+    let client = Client::new(EXAMPLE);
+    let price_books = PriceBooks::get_best_bid_ask(&client, Some(vec!["BTC-USD"])).await;
+    assert_eq!(price_books.is_ok(), true);
 }

@@ -12,6 +12,7 @@ pub mod maintenance;
 pub mod market_trades;
 pub mod perpetual_details;
 pub mod price_book;
+pub mod price_books;
 pub mod product;
 pub mod product_book;
 pub mod product_candles;
