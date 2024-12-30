@@ -8,6 +8,7 @@ pub mod expiring_contract_status;
 pub mod fcm_trading_session_details;
 pub mod future_product_details;
 pub mod granularity;
+pub mod http_method;
 pub mod maintenance;
 pub mod market_trades;
 pub mod perpetual_details;

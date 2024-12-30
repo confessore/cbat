@@ -1,4 +1,4 @@
-use crate::{ client::{ create_jwt, Client }, price_books::PriceBooks };
+use crate::{ client::{ create_jwt, Client }, http_method::HttpMethod, price_books::PriceBooks };
 
 pub struct ApiProducts;
 
@@ -19,7 +19,10 @@ impl ApiProducts {
             format!("?{}", query_params.join("&"))
         };
         let url = &format!("{}{}", BEST_BID_ASK_URL, query_string);
-        let response = client.get_auth(url, &create_jwt("GET", BEST_BID_ASK_ENDPOINT)).await?;
+        let response = client.get_auth(
+            url,
+            &create_jwt(HttpMethod::Get.as_str(), BEST_BID_ASK_ENDPOINT)
+        ).await?;
         let price_books: PriceBooks = response.json().await?;
         Ok(price_books)
     }
