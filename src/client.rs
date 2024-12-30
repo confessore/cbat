@@ -44,6 +44,56 @@ impl<'a> Client<'_> {
         }
         result
     }
+
+    pub async fn post_auth(
+        &self,
+        url: &str,
+        jwt: &str,
+        body: &str
+    ) -> Result<reqwest::Response, reqwest::Error> {
+        let result = self.client.post(url).bearer_auth(jwt).body(body.to_string()).send().await;
+        if let Ok(response) = &result {
+            if !response.status().is_success() {
+                println!("Failed: {}", response.status());
+            }
+        } else if let Err(e) = &result {
+            println!("Failed to get response: {}", e);
+        }
+        result
+    }
+
+    pub async fn put_auth(
+        &self,
+        url: &str,
+        jwt: &str,
+        body: &str
+    ) -> Result<reqwest::Response, reqwest::Error> {
+        let result = self.client.put(url).bearer_auth(jwt).body(body.to_string()).send().await;
+        if let Ok(response) = &result {
+            if !response.status().is_success() {
+                println!("Failed: {}", response.status());
+            }
+        } else if let Err(e) = &result {
+            println!("Failed to get response: {}", e);
+        }
+        result
+    }
+
+    pub async fn delete_auth(
+        &self,
+        url: &str,
+        jwt: &str
+    ) -> Result<reqwest::Response, reqwest::Error> {
+        let result = self.client.delete(url).bearer_auth(jwt).send().await;
+        if let Ok(response) = &result {
+            if !response.status().is_success() {
+                println!("Failed: {}", response.status());
+            }
+        } else if let Err(e) = &result {
+            println!("Failed to get response: {}", e);
+        }
+        result
+    }
 }
 
 #[derive(Debug, Serialize)]
