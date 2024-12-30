@@ -11,3 +11,5 @@ serde_derive = "1.0.217"
 chrono = { version = "0.4.39", features = ["serde"] }
 jsonwebtoken = { version = "9.3.0", features = ["use_pem"] }
 rand = "0.8.5"
+sec1 = { version = "0.7.3", features = ["alloc", "pkcs8", "pem", "std"] }
+thiserror = "2.0.9"

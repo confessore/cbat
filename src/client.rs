@@ -1,6 +1,7 @@
 use chrono::{Duration, Utc};
 use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
 use rand::Rng;
+use sec1::{pkcs8::LineEnding, DecodeEcPrivateKey};
 use serde::Serialize;
 
 pub struct Client<'a> {
@@ -83,10 +84,21 @@ pub fn create_jwt(request_method: &str, request_path: &str) -> String {
         kid: Some(key_name.to_owned()),
         ..Default::default()
     };
-    //let key_secret = key_secret.replace("\\n", "\n");
-    let key = EncodingKey::from_ec_pem(key_secret.as_bytes()).expect("Invalid EC key");
+    let key_secret = key_secret.replace("\\n", "\n");
+    let pem = from_sec1_pem(&key_secret);
+    println!("key_secret: {}", pem);
+    let key = EncodingKey::from_ec_pem(pem.as_bytes()).expect("Invalid EC key");
     let jwt = encode(&header, &claims, &key).unwrap();
     jwt
+}
+
+fn from_sec1_pem(pem: &str) -> String {
+    let ec_private_key = sec1::pkcs8::SecretDocument::from_sec1_pem(pem).unwrap();
+    let pkcs8_pem = ec_private_key
+        .to_pem("PRIVATE KEY", LineEnding::LF);
+    let binding = pkcs8_pem.unwrap();
+    let pem: &str = binding.as_ref();
+    pem.to_string()
 }
 
 pub const PROTOCOL: &str = "https://";
