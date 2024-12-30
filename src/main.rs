@@ -16,10 +16,6 @@ async fn main() -> Result<(), Error> {
 
     // Create a reqwest client
     let client = Client::new("example");
-    let accounts = client.list_accounts().await?;
-    println!("{:#?}", accounts);
-    let accounts = client.get_account(&accounts.accounts.unwrap()[0].uuid).await?;
-    println!("{:#?}", accounts);
     //let product = Product::get_public_product(&client, "BTC-USD").await?;
     //println!("{:#?}", product);
     //let server_time = ServerTime::get_public_server_time(&client).await?;

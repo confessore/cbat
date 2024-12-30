@@ -22,4 +22,8 @@ pub mod server_time;
 pub mod test;
 pub mod trade;
 
+pub mod api_accounts;
+pub mod api_products;
+pub mod api_public;
+
 pub use reqwest;
