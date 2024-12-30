@@ -1,4 +1,4 @@
-use chrono::{DateTime, Local};
+use chrono::{ DateTime, Local };
 use serde_derive::Deserialize;
 
 use crate::perpetual_details::PerpetualDetails;

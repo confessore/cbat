@@ -21,3 +21,5 @@ pub mod products;
 pub mod server_time;
 pub mod test;
 pub mod trade;
+
+pub use reqwest;

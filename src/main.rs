@@ -1,6 +1,10 @@
 use cbat_rs::{
-    accounts::Accounts, client::Client, market_trades::MarketTrades, product::Product,
-    product_book::ProductBook, server_time::ServerTime,
+    accounts::Accounts,
+    client::Client,
+    market_trades::MarketTrades,
+    product::Product,
+    product_book::ProductBook,
+    server_time::ServerTime,
 };
 use reqwest::Error;
 use tokio;
@@ -12,6 +16,10 @@ async fn main() -> Result<(), Error> {
 
     // Create a reqwest client
     let client = Client::new("example");
+    let accounts = client.list_accounts().await?;
+    println!("{:#?}", accounts);
+    let accounts = client.get_account(&accounts.accounts.unwrap()[0].uuid).await?;
+    println!("{:#?}", accounts);
     //let product = Product::get_public_product(&client, "BTC-USD").await?;
     //println!("{:#?}", product);
     //let server_time = ServerTime::get_public_server_time(&client).await?;
@@ -24,8 +32,8 @@ async fn main() -> Result<(), Error> {
     //println!("{:#?}", market_trades);
     // Send a GET request
     //let response = client.get(url).await?;
-    let accounts = Accounts::list_accounts(&client).await?;
-    println!("{:#?}", accounts);
+    //let accounts = Accounts::list_accounts(&client).await?;
+    //println!("{:#?}", accounts);
     // Check if the request was successful
     /*if response.status().is_success() {
         // Parse the response as JSON
