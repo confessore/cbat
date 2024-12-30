@@ -114,3 +114,11 @@ pub async fn best_bid_ask_test() {
     let price_books = ApiProducts::get_best_bid_ask(&client, Some(vec!["BTC-USD"])).await;
     assert_eq!(price_books.is_ok(), true);
 }
+
+#[tokio::test]
+pub async fn product_book_test() {
+    use crate::{ client::Client, api_products::ApiProducts };
+    let client = Client::new(EXAMPLE);
+    let price_books = ApiProducts::get_product_book(&client, "BTC-USD", Some(1), None).await;
+    assert_eq!(price_books.is_ok(), true);
+}
