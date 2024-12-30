@@ -9,7 +9,7 @@ CBAT_KEY_SECRET="-----BEGIN EC PRIVATE KEY-----\nYOUR PRIVATE KEY\n-----END EC P
 
 Everything shoud be available in the prelude
 ```rs
-use cbat_rs::prelude::*
+use cbat::prelude::*
 ```
 
 Here's how you can get started!

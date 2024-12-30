@@ -28,3 +28,4 @@ impl ApiPortfolios {
 
 const PORTFOLIOS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/portfolios";
 const PORTFOLIOS_ENDPOINT: &str = "/api/v3/brokerage/portfolios";
+const sample: &str = "sample"; // This is a sample
