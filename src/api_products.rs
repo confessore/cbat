@@ -2,9 +2,11 @@ use crate::{
     client::{ create_jwt, Client },
     contract_expiry_type::{ self, ContractExpiryType },
     expiring_contract_status::{ self, ExpiringContractStatus },
+    granularity::Granularity,
     http_method::HttpMethod,
     price_books::PriceBooks,
-    product::{ self, Product },
+    product::Product,
+    product_candles::ProductCandles,
     products::Products,
 };
 
@@ -108,7 +110,7 @@ impl ApiProducts {
         } else {
             format!("?{}", query_params.join("&"))
         };
-        let url = &format!("{}{}", PRODUCTS_URLS, query_string);
+        let url = &format!("{}{}", PRODUCTS_URL, query_string);
         let response = client.get_auth(
             url,
             &create_jwt(HttpMethod::Get.as_str(), PRODUCTS_ENDPOINT)
@@ -127,7 +129,7 @@ impl ApiProducts {
                 &format!("?get_tradability_status={}", get_tradability_status),
             None => "",
         };
-        let url = &format!("{}/{}{}", PRODUCTS_URLS, product_id, get_tradability_status);
+        let url = &format!("{}/{}{}", PRODUCTS_URL, product_id, get_tradability_status);
         let response = client.get_auth(
             url,
             &create_jwt(HttpMethod::Get.as_str(), &format!("{}/{}", PRODUCTS_ENDPOINT, product_id))
@@ -135,11 +137,44 @@ impl ApiProducts {
         let products: Product = response.json().await?;
         Ok(products)
     }
+
+    pub async fn get_product_candles(
+        client: &Client<'_>,
+        product_id: &str,
+        start: &str,
+        end: &str,
+        granularity: Granularity,
+        limit: Option<u32>
+    ) -> Result<ProductCandles, reqwest::Error> {
+        let limit = match limit {
+            Some(limit) => &format!("&limit={}", limit),
+            None => "",
+        };
+
+        let url = &format!(
+            "{}/{}/candles?start={}&end={}&granularity={}{}",
+            PRODUCTS_URL,
+            product_id,
+            start,
+            end,
+            granularity,
+            limit
+        );
+        let response = client.get_auth(
+            url,
+            &create_jwt(
+                HttpMethod::Get.as_str(),
+                &format!("{}/{}/candles", PRODUCTS_ENDPOINT, product_id)
+            )
+        ).await?;
+        let product_candles: ProductCandles = response.json().await?;
+        Ok(product_candles)
+    }
 }
 
 const BEST_BID_ASK_URL: &str = "https://api.coinbase.com/api/v3/brokerage/best_bid_ask";
 const BEST_BID_ASK_ENDPOINT: &str = "/api/v3/brokerage/best_bid_ask";
 const PRODUCT_BOOK_URL: &str = "https://api.coinbase.com/api/v3/brokerage/product_book";
 const PRODUCT_BOOK_ENDPOINT: &str = "/api/v3/brokerage/product_book";
-const PRODUCTS_URLS: &str = "https://api.coinbase.com/api/v3/brokerage/products";
+const PRODUCTS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/products";
 const PRODUCTS_ENDPOINT: &str = "/api/v3/brokerage/products";

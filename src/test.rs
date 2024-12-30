@@ -148,3 +148,23 @@ pub async fn product_test() {
     let products = ApiProducts::get_product(&client, "BTC-USD", None).await;
     assert_eq!(products.is_ok(), true);
 }
+
+#[tokio::test]
+pub async fn product_candles_test() {
+    use crate::{ client::Client, granularity::Granularity, api_products::ApiProducts };
+    use chrono::{ DateTime, Utc };
+    let client = Client::new(EXAMPLE);
+    let current_time: DateTime<Utc> = Utc::now();
+    let epoch_time = current_time.timestamp();
+    let start = epoch_time - 10_000;
+    let end = epoch_time + 10_000;
+    let products = ApiProducts::get_product_candles(
+        &client,
+        "BTC-USD",
+        &start.to_string(),
+        &end.to_string(),
+        Granularity::OneMinute,
+        Some(1)
+    ).await;
+    assert_eq!(products.is_ok(), true);
+}

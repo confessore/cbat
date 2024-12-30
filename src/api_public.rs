@@ -85,7 +85,7 @@ impl ApiPublic {
 
         let url = &format!(
             "{}/{}/candles?start={}&end={}&granularity={}{}",
-            PUBLIC_PRODUCT_URL,
+            PUBLIC_PRODUCTS_URL,
             product_id,
             start,
             end,
@@ -101,7 +101,7 @@ impl ApiPublic {
         client: &Client<'_>,
         product_id: &str
     ) -> Result<Product, reqwest::Error> {
-        let url = &format!("{}/{}", PUBLIC_PRODUCT_URL, product_id);
+        let url = &format!("{}/{}", PUBLIC_PRODUCTS_URL, product_id);
         let response = client.get(url).await?;
         let product: Product = response.json().await?;
         Ok(product)
@@ -169,8 +169,6 @@ impl ApiPublic {
 
 const PUBLIC_MARKET_TRADES_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products/";
 const PUBLIC_MARKET_TRADES_ENDPOINT: &str = "/api/v3/brokerage/market/products/ticker";
-const PUBLIC_PRODUCT_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products";
-const PUBLIC_PRODUCT_ENDPOINT: &str = "/api/v3/brokerage/market/products";
 const PUBLIC_PRODUCTS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products";
 const PUBLIC_PRODUCTS_ENDPOINT: &str = "/api/v3/brokerage/market/products";
 const PUBLIC_PRODUCT_BOOK_URL: &str =
