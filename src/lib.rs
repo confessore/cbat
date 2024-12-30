@@ -26,6 +26,8 @@ pub mod perpetual_details;
 pub mod portfolio;
 pub mod portfolio_type;
 pub mod portfolios;
+pub mod preview_order;
+pub mod preview_order_request;
 pub mod price_book;
 pub mod price_books;
 pub mod product;
@@ -85,6 +87,8 @@ pub mod prelude {
     pub use crate::portfolio::Portfolio;
     pub use crate::portfolio_type::PortfolioType;
     pub use crate::portfolios::Portfolios;
+    pub use crate::preview_order::PreviewOrder;
+    pub use crate::preview_order_request::PreviewOrderRequest;
     pub use crate::price_book::PriceBook;
     pub use crate::price_books::PriceBooks;
     pub use crate::product::Product;

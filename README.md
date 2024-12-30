@@ -198,7 +198,6 @@ pub async fn portfolios_test() {
     use crate::{ client::Client, api_portfolios::ApiPortfolios, portfolio_type::PortfolioType };
     let client = Client::new(EXAMPLE);
     let portfolios = ApiPortfolios::list_portfolios(&client, Some(PortfolioType::Undefined)).await;
-    println!("{:?}", portfolios);
     assert_eq!(portfolios.is_ok(), true);
 }
 

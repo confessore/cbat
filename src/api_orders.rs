@@ -1,9 +1,11 @@
 use crate::{
     cancel_orders::CancelOrders,
     client::{ create_jwt, Client },
-    http_method::HttpMethod,
     create_order::CreateOrder,
     create_order_request::CreateOrderRequest,
+    http_method::HttpMethod,
+    preview_order::PreviewOrder,
+    preview_order_request::PreviewOrderRequest,
 };
 use serde_json::json;
 
@@ -33,7 +35,6 @@ impl ApiOrders {
     ) -> Result<CreateOrder, reqwest::Error> {
         let data = json!(request);
         let url = &format!("{}", CREATE_ORDER_URL);
-        println!("{}", data.to_string());
         let response = client.post_auth(
             url,
             &create_jwt(HttpMethod::Post.as_str(), CREATE_ORDER_ENDPOINT),
@@ -42,9 +43,26 @@ impl ApiOrders {
         let create_order: CreateOrder = response.json().await?;
         Ok(create_order)
     }
+
+    pub async fn preview_order(
+        client: &Client<'_>,
+        request: PreviewOrderRequest<'_>
+    ) -> Result<PreviewOrder, reqwest::Error> {
+        let data = json!(request);
+        let url = &format!("{}", PREVIEW_ORDER_URL);
+        let response = client.post_auth(
+            url,
+            &create_jwt(HttpMethod::Post.as_str(), PREVIEW_ORDER_ENDPOINT),
+            &data.to_string()
+        ).await?;
+        let preview_order: PreviewOrder = response.json().await?;
+        Ok(preview_order)
+    }
 }
 
 const CANCEL_ORDERS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/batch_cancel";
 const CANCEL_ORDERS_ENDPOINT: &str = "/api/v3/brokerage/orders/batch_cancel";
 const CREATE_ORDER_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders";
 const CREATE_ORDER_ENDPOINT: &str = "/api/v3/brokerage/orders";
+const PREVIEW_ORDER_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/preview";
+const PREVIEW_ORDER_ENDPOINT: &str = "/api/v3/brokerage/orders/preview";
