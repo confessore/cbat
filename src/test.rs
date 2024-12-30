@@ -176,3 +176,12 @@ pub async fn market_trades_test() {
     let market_trades = ApiProducts::get_market_trades(&client, "BTC-USD", 1, None, None).await;
     assert_eq!(market_trades.is_ok(), true);
 }
+
+#[tokio::test]
+pub async fn portfolios_test() {
+    use crate::{ client::Client, api_portfolios::ApiPortfolios, portfolio_type::PortfolioType };
+    let client = Client::new(EXAMPLE);
+    let portfolios = ApiPortfolios::list_portfolios(&client, Some(PortfolioType::Undefined)).await;
+    println!("{:?}", portfolios);
+    assert_eq!(portfolios.is_ok(), true);
+}
