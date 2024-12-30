@@ -201,4 +201,47 @@ pub async fn portfolios_test() {
     println!("{:?}", portfolios);
     assert_eq!(portfolios.is_ok(), true);
 }
+
+#[tokio::test]
+pub async fn create_then_cancel_order_test() {
+    use crate::{
+        client::Client,
+        create_order_request::CreateOrderRequest,
+        api_orders::ApiOrders,
+        order_configuration::OrderConfiguration,
+        limit_limit_gtc::LimitLimitGtc,
+    };
+    let client = Client::new(EXAMPLE);
+    let request = CreateOrderRequest {
+        client_order_id: &uuid::Uuid::new_v4().to_string(),
+        product_id: "BTC-USD",
+        side: "SELL",
+        order_configuration: OrderConfiguration {
+            market_market_ioc: None,
+            limit_limit_fok: None,
+            limit_limit_gtd: None,
+            limit_limit_gtc: Some(LimitLimitGtc {
+                quote_size: None,
+                base_size: Some("0.001".to_string()),
+                limit_price: Some("999999.0".to_string()),
+                post_only: None,
+            }),
+            sor_limit_ioc: None,
+            stop_limit_stop_limit_gtc: None,
+            stop_limit_stop_limit_gtd: None,
+            trigger_bracket_gtc: None,
+            trigger_bracket_gtd: None,
+        },
+        leverage: None,
+        margin_type: None,
+        retail_portfolio_id: None,
+        preview_id: None,
+    };
+    let create_order = ApiOrders::create_order(&client, request).await;
+    assert_eq!(create_order.is_ok(), true);
+    let order_id = create_order.unwrap().success_response.order_id;
+    let cancel_orders = ApiOrders::cancel_orders(&client, vec![&order_id]).await;
+    assert_eq!(cancel_orders.is_ok(), true);
+}
+
 ```
