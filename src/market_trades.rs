@@ -33,7 +33,7 @@ impl MarketTrades {
             PUBLIC_MARKET_TRADES_URL, product_id, limit, start, end
         );
         let response = client
-            .get_auth(url, &create_jwt("GET", PUBLIC_MARKET_TRADES_ENDPOINT))
+            .get(url)
             .await?;
         let market_trades: MarketTrades = response.json().await?;
         Ok(market_trades)

@@ -95,3 +95,13 @@ pub async fn accounts_test() {
     let account = Accounts::list_accounts(&client).await;
     assert_eq!(account.is_ok(), true);
 }
+
+#[tokio::test]
+pub async fn account_test() {
+    use crate::{accounts::Accounts, client::Client};
+    let client = Client::new(EXAMPLE);
+    let accounts = Accounts::list_accounts(&client).await.unwrap();
+    let account_uuid = &accounts.accounts.unwrap()[0].uuid;
+    let accounts = Accounts::get_account(&client, &account_uuid).await;
+    assert_eq!(accounts.is_ok(), true);
+}

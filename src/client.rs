@@ -86,7 +86,6 @@ pub fn create_jwt(request_method: &str, request_path: &str) -> String {
     };
     let key_secret = key_secret.replace("\\n", "\n");
     let pem = from_sec1_pem(&key_secret);
-    println!("key_secret: {}", pem);
     let key = EncodingKey::from_ec_pem(pem.as_bytes()).expect("Invalid EC key");
     let jwt = encode(&header, &claims, &key).unwrap();
     jwt

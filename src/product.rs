@@ -59,7 +59,7 @@ impl Product {
     ) -> Result<Product, reqwest::Error> {
         let url = &format!("{}/{}", PUBLIC_PRODUCT_URL, product_id);
         let response = client
-            .get_auth(url, &create_jwt("GET", PUBLIC_PRODUCT_ENDPOINT))
+            .get(url)
             .await?;
         let product: Product = response.json().await?;
         Ok(product)
