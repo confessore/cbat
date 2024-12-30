@@ -23,6 +23,14 @@ pub mod test;
 pub mod trade;
 
 pub mod api_accounts;
+pub mod api_converts;
+pub mod api_data;
+pub mod api_fees;
+pub mod api_futures;
+pub mod api_orders;
+pub mod api_payment_methods;
+pub mod api_perpetuals;
+pub mod api_portfolios;
 pub mod api_products;
 pub mod api_public;
 
