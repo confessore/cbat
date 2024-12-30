@@ -4,6 +4,7 @@ use crate::{
     expiring_contract_status::{ self, ExpiringContractStatus },
     granularity::Granularity,
     http_method::HttpMethod,
+    market_trades::MarketTrades,
     price_books::PriceBooks,
     product::Product,
     product_candles::ProductCandles,
@@ -170,6 +171,40 @@ impl ApiProducts {
         let product_candles: ProductCandles = response.json().await?;
         Ok(product_candles)
     }
+
+    pub async fn get_market_trades(
+        client: &Client<'_>,
+        product_id: &str,
+        limit: u32,
+        start: Option<String>,
+        end: Option<String>
+    ) -> Result<MarketTrades, reqwest::Error> {
+        let start = match start {
+            Some(start) => &format!("&start={}", start),
+            None => "",
+        };
+        let end = match end {
+            Some(end) => &format!("&end={}", end),
+            None => "",
+        };
+        let url = &format!(
+            "{}/{}/ticker?limit={}{}{}",
+            MARKET_TRADES_URL,
+            product_id,
+            limit,
+            start,
+            end
+        );
+        let response = client.get_auth(
+            url,
+            &create_jwt(
+                HttpMethod::Get.as_str(),
+                &format!("{}/{}/ticker", MARKET_TRADES_ENDPOINT, product_id)
+            )
+        ).await?;
+        let market_trades: MarketTrades = response.json().await?;
+        Ok(market_trades)
+    }
 }
 
 const BEST_BID_ASK_URL: &str = "https://api.coinbase.com/api/v3/brokerage/best_bid_ask";
@@ -178,3 +213,5 @@ const PRODUCT_BOOK_URL: &str = "https://api.coinbase.com/api/v3/brokerage/produc
 const PRODUCT_BOOK_ENDPOINT: &str = "/api/v3/brokerage/product_book";
 const PRODUCTS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/products";
 const PRODUCTS_ENDPOINT: &str = "/api/v3/brokerage/products";
+const MARKET_TRADES_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products";
+const MARKET_TRADES_ENDPOINT: &str = "/api/v3/brokerage/market/products";

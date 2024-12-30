@@ -168,3 +168,11 @@ pub async fn product_candles_test() {
     ).await;
     assert_eq!(products.is_ok(), true);
 }
+
+#[tokio::test]
+pub async fn market_trades_test() {
+    use crate::{ client::Client, api_products::ApiProducts };
+    let client = Client::new(EXAMPLE);
+    let market_trades = ApiProducts::get_market_trades(&client, "BTC-USD", 1, None, None).await;
+    assert_eq!(market_trades.is_ok(), true);
+}

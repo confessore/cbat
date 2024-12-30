@@ -31,7 +31,7 @@ impl ApiPublic {
             None => "",
         };
         let url = &format!(
-            "{}{}/ticker?limit={}{}{}",
+            "{}/{}/ticker?limit={}{}{}",
             PUBLIC_MARKET_TRADES_URL,
             product_id,
             limit,
@@ -167,10 +167,8 @@ impl ApiPublic {
     }
 }
 
-const PUBLIC_MARKET_TRADES_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products/";
-const PUBLIC_MARKET_TRADES_ENDPOINT: &str = "/api/v3/brokerage/market/products/ticker";
+const PUBLIC_MARKET_TRADES_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products";
 const PUBLIC_PRODUCTS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/market/products";
-const PUBLIC_PRODUCTS_ENDPOINT: &str = "/api/v3/brokerage/market/products";
 const PUBLIC_PRODUCT_BOOK_URL: &str =
     "https://api.coinbase.com/api/v3/brokerage/market/product_book";
 const PUBLIC_SERVER_TIME: &str = "https://api.coinbase.com/api/v3/brokerage/time";
