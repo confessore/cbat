@@ -19,6 +19,6 @@ jobs:
       - name: Build Docker Image
         run: |
           docker swarm init
-          printenv CBAT_KEY_NAME | docker secret create CBAT_KEY_NAME -
-          printenv CBAT_KEY_SECRET | docker secret create CBAT_KEY_SECRET -
+          echo "$CBAT_KEY_NAME" | docker secret create CBAT_KEY_NAME -
+          echo "$CBAT_KEY_SECRET" | docker secret create CBAT_KEY_SECRET -
           docker build --secret id=CBAT_KEY_NAME --secret id=CBAT_KEY_SECRET -t cbat:latest .
