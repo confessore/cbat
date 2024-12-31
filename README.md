@@ -1,4 +1,4 @@
-Welcome to the unofficial Rust client library for the Coinbase Advanced Trade API
+Welcome to the unofficial Rust crate for the Coinbase Advanced Trade API
 
 Set your environment variables
 
