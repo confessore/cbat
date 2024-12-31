@@ -222,8 +222,8 @@ pub async fn preview_order_test() {
             limit_limit_gtd: None,
             limit_limit_gtc: Some(LimitLimitGtc {
                 quote_size: None,
-                base_size: Some("0.001".to_string()),
-                limit_price: Some("999999.0".to_string()),
+                base_size: Some((0.001).to_string()),
+                limit_price: Some((999_999.0).to_string()),
                 post_only: None,
             }),
             sor_limit_ioc: None,
@@ -253,17 +253,17 @@ pub async fn create_edit_cancel_order_test() {
     };
     let client = Client::new(EXAMPLE);
     let request = CreateOrderRequest {
-        client_order_id: &uuid::Uuid::new_v4().to_string(),
-        product_id: "BTC-USD",
-        side: "SELL",
+        client_order_id: uuid::Uuid::new_v4().to_string(),
+        product_id: "BTC-USD".to_string(),
+        side: "SELL".to_string(),
         order_configuration: OrderConfiguration {
             market_market_ioc: None,
             limit_limit_fok: None,
             limit_limit_gtd: None,
             limit_limit_gtc: Some(LimitLimitGtc {
                 quote_size: None,
-                base_size: Some("0.001".to_string()),
-                limit_price: Some("999999.0".to_string()),
+                base_size: Some((0.001).to_string()),
+                limit_price: Some((999_999.0).to_string()),
                 post_only: None,
             }),
             sor_limit_ioc: None,
@@ -282,15 +282,15 @@ pub async fn create_edit_cancel_order_test() {
     let order_id = create_order.unwrap().success_response.order_id;
     let request = PreviewEditOrderRequest {
         order_id: &order_id,
-        price: "999998.0",
-        size: "0.001",
+        price: (999_998.0).to_string(),
+        size: (0.001).to_string(),
     };
     let preview_edit_order = ApiOrders::preview_edit_order(&client, request).await;
     assert_eq!(preview_edit_order.is_ok(), true);
     let request = EditOrderRequest {
         order_id: &order_id,
-        price: "999998.0",
-        size: "0.001",
+        price: (999_998.0).to_string(),
+        size: (0.001).to_string(),
     };
     let edit_order = ApiOrders::edit_order(&client, request).await;
     assert_eq!(edit_order.is_ok(), true);

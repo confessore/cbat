@@ -1,7 +1,7 @@
 use crate::{
     client::{ create_jwt, Client },
-    contract_expiry_type::{ self, ContractExpiryType },
-    expiring_contract_status::{ self, ExpiringContractStatus },
+    contract_expiry_type::ContractExpiryType,
+    expiring_contract_status::ExpiringContractStatus,
     granularity::Granularity,
     http_method::HttpMethod,
     market_trades::MarketTrades,

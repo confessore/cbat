@@ -7,7 +7,7 @@ pub struct PreviewOrderRequest<'a> {
     pub product_id: &'a str,
     pub side: &'a str,
     pub order_configuration: OrderConfiguration,
-    pub leverage: Option<&'a str>,
-    pub margin_type: Option<&'a str>,
-    pub retail_portfolio_id: Option<&'a str>,
+    pub leverage: Option<String>,
+    pub margin_type: Option<String>,
+    pub retail_portfolio_id: Option<String>,
 }
