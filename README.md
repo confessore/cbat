@@ -1,4 +1,4 @@
-Welcome to the unofficial Coinbase Advanced Trade API for rust
+Welcome to the unofficial Rust client library for the Coinbase Advanced Trade API
 
 Set your environment variables
 The secret must contain EC as it is a sec1 key and needs to be converted to pkcs#8
