@@ -304,4 +304,31 @@ pub async fn create_edit_cancel_order_test() {
     assert_eq!(cancel_orders.is_ok(), true);
 }
 
+#[tokio::test]
+pub async fn list_orders_test() {
+    use crate::{ client::Client, api_orders::ApiOrders };
+    let client = Client::new(EXAMPLE);
+    let orders = ApiOrders::list_orders(
+        &client,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        Some(&(1).to_string()),
+        None,
+        None,
+        None
+    ).await;
+    assert_eq!(orders.is_ok(), true);
+}
+
 ```
