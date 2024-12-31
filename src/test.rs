@@ -235,9 +235,9 @@ pub async fn create_edit_cancel_order_test() {
     };
     let client = Client::new(EXAMPLE);
     let request = CreateOrderRequest {
-        client_order_id: uuid::Uuid::new_v4().to_string(),
-        product_id: "BTC-USD".to_string(),
-        side: "SELL".to_string(),
+        client_order_id: &uuid::Uuid::new_v4().to_string(),
+        product_id: "BTC-USD",
+        side: "SELL",
         order_configuration: OrderConfiguration {
             market_market_ioc: None,
             limit_limit_fok: None,
@@ -261,6 +261,8 @@ pub async fn create_edit_cancel_order_test() {
     };
     let create_order = ApiOrders::create_order(&client, request).await;
     assert_eq!(create_order.is_ok(), true);
+    std::thread::sleep(std::time::Duration::from_millis(250));
+
     let order_id = create_order.unwrap().success_response.order_id;
     let request = PreviewEditOrderRequest {
         order_id: &order_id,
@@ -269,6 +271,8 @@ pub async fn create_edit_cancel_order_test() {
     };
     let preview_edit_order = ApiOrders::preview_edit_order(&client, request).await;
     assert_eq!(preview_edit_order.is_ok(), true);
+    std::thread::sleep(std::time::Duration::from_millis(250));
+
     let request = EditOrderRequest {
         order_id: &order_id,
         price: (999_998.0).to_string(),
@@ -276,6 +280,8 @@ pub async fn create_edit_cancel_order_test() {
     };
     let edit_order = ApiOrders::edit_order(&client, request).await;
     assert_eq!(edit_order.is_ok(), true);
+    std::thread::sleep(std::time::Duration::from_millis(250));
+
     let cancel_orders = ApiOrders::cancel_orders(&client, vec![&order_id]).await;
     assert_eq!(cancel_orders.is_ok(), true);
 }

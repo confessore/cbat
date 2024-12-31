@@ -35,7 +35,7 @@ impl ApiOrders {
 
     pub async fn create_order(
         client: &Client<'_>,
-        request: CreateOrderRequest
+        request: CreateOrderRequest<'_>
     ) -> Result<CreateOrder, reqwest::Error> {
         let data = json!(request);
         let url = &format!("{}", CREATE_ORDER_URL);
