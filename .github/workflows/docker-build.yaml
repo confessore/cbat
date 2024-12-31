@@ -27,3 +27,4 @@ jobs:
           echo "$CBAT_KEY_SECRET" | docker secret create CBAT_KEY_SECRET -
           docker build --secret id=CBAT_KEY_NAME --secret id=CBAT_KEY_SECRET -t cbat:latest .
           echo "$CARGO_REGISTRY_TOKEN" | cargo login -
+          cargo publish --dry-run
