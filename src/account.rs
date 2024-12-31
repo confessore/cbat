@@ -1,3 +1,4 @@
+use chrono::{ DateTime, Utc };
 use serde_derive::Deserialize;
 
 use crate::balance::Balance;
@@ -10,9 +11,9 @@ pub struct Account {
     pub available_balance: Balance, // Available balance in the account
     pub default: Option<bool>, // Whether or not this account is the user's primary account
     pub active: Option<bool>, // Whether or not this account is active and okay to use
-    pub created_at: Option<String>, // RFC3339 Timestamp - Time at which this account was created
-    pub updated_at: Option<String>, // RFC3339 Timestamp - Time at which this account was updated
-    pub deleted_at: Option<String>, // RFC3339 Timestamp - Time at which this account was deleted
+    pub created_at: Option<DateTime<Utc>>, // RFC3339 Timestamp - Time at which this account was created
+    pub updated_at: Option<DateTime<Utc>>, // RFC3339 Timestamp - Time at which this account was updated
+    pub deleted_at: Option<DateTime<Utc>>, // RFC3339 Timestamp - Time at which this account was deleted
     pub account_type: Option<String>, // Possible values: [ACCOUNT_TYPE_UNSPECIFIED, ACCOUNT_TYPE_CRYPTO, ACCOUNT_TYPE_FIAT, ACCOUNT_TYPE_VAULT, ACCOUNT_TYPE_PERP_FUTURES]
     pub ready: Option<bool>, // Whether or not this account is ready to trade
     pub hold: Balance, // Amount that is being held for pending transfers against the available balance
