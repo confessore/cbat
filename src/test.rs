@@ -1,3 +1,5 @@
+use crate::preview_edit_order;
+
 #[cfg(test)]
 const EXAMPLE: &str = "example";
 
@@ -186,13 +188,15 @@ pub async fn portfolios_test() {
 }
 
 #[tokio::test]
-pub async fn create_then_cancel_order_test() {
+pub async fn create_edit_cancel_order_test() {
     use crate::{
         client::Client,
         create_order_request::CreateOrderRequest,
         api_orders::ApiOrders,
         order_configuration::OrderConfiguration,
         limit_limit_gtc::LimitLimitGtc,
+        preview_edit_order_request::PreviewEditOrderRequest,
+        edit_order_request::EditOrderRequest,
     };
     let client = Client::new(EXAMPLE);
     let request = CreateOrderRequest {
@@ -223,6 +227,20 @@ pub async fn create_then_cancel_order_test() {
     let create_order = ApiOrders::create_order(&client, request).await;
     assert_eq!(create_order.is_ok(), true);
     let order_id = create_order.unwrap().success_response.order_id;
+    let request = PreviewEditOrderRequest {
+        order_id: &order_id,
+        price: "999998.0",
+        size: "0.001",
+    };
+    let preview_edit_order = ApiOrders::preview_edit_order(&client, request).await;
+    assert_eq!(preview_edit_order.is_ok(), true);
+    let request = EditOrderRequest {
+        order_id: &order_id,
+        price: "999998.0",
+        size: "0.001",
+    };
+    let edit_order = ApiOrders::edit_order(&client, request).await;
+    assert_eq!(edit_order.is_ok(), true);
     let cancel_orders = ApiOrders::cancel_orders(&client, vec![&order_id]).await;
     assert_eq!(cancel_orders.is_ok(), true);
 }
