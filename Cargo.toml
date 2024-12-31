@@ -1,7 +1,11 @@
 [package]
 name = "cbat"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
+documentation = "https://docs.rs/cbat"
+readme = "https://github.com/confessore/cbat/blob/main/README.md"
+repository = "https://github.com/confessore/cbat"
+license = "MIT"
 
 [lib]
 name = "cbat"
