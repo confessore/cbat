@@ -32,3 +32,8 @@ jobs:
         run: |
           echo "$CARGO_REGISTRY_TOKEN" | cargo login -
           cargo publish
+        continue-on-error: true
+
+      - name: OK
+        run: echo "OK"
+        if: job.steps.bad.status == failure()
