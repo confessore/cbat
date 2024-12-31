@@ -4,9 +4,7 @@ FROM rust:latest AS builder
 WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
 COPY src/lib.rs ./src/
-RUN --mount=type=secret,id=CBAT_KEY_NAME,env=CBAT_KEY_NAME \
-    --mount=type=secret,id=CBAT_KEY_SECRET,env=CBAT_KEY_SECRET \
-    cargo fetch
+RUN cargo fetch
 COPY . .
 RUN --mount=type=secret,id=CBAT_KEY_NAME,env=CBAT_KEY_NAME \
     --mount=type=secret,id=CBAT_KEY_SECRET,env=CBAT_KEY_SECRET \

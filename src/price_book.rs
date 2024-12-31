@@ -1,4 +1,4 @@
-use chrono::{ DateTime, Local };
+use chrono::{ DateTime, Utc };
 use serde_derive::Deserialize;
 
 use crate::bid_ask::BidAsk;
@@ -8,5 +8,5 @@ pub struct PriceBook {
     pub product_id: String,
     pub bids: Vec<BidAsk>,
     pub asks: Vec<BidAsk>,
-    pub time: Option<DateTime<Local>>,
+    pub time: Option<DateTime<Utc>>,
 }

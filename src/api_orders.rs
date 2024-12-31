@@ -92,6 +92,15 @@ impl ApiOrders {
         let edit_order: EditOrder = response.json().await?;
         Ok(edit_order)
     }
+
+    pub async fn list_orders(client: &Client<'_>) -> Result<reqwest::Response, reqwest::Error> {
+        let url = &format!("{}", LIST_ORDERS_URL);
+        let response = client.get_auth(
+            url,
+            &create_jwt(HttpMethod::Get.as_str(), LIST_ORDERS_ENDPOINT)
+        ).await?;
+        Ok(response)
+    }
 }
 
 const CANCEL_ORDERS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/batch_cancel";
@@ -105,3 +114,5 @@ const PREVIEW_EDIT_ORDER_URL: &str =
 const PREVIEW_EDIT_ORDER_ENDPOINT: &str = "/api/v3/brokerage/orders/edit_preview";
 const EDIT_ORDER_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/edit";
 const EDIT_ORDER_ENDPOINT: &str = "/api/v3/brokerage/orders/edit";
+const LIST_ORDERS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/historical/batch";
+const LIST_ORDERS_ENDPOINT: &str = "/api/v3/brokerage/orders/historical/batch";

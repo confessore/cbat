@@ -1,5 +1,6 @@
 pub mod account;
 pub mod accounts;
+pub mod balance;
 pub mod bid_ask;
 pub mod cancel_order;
 pub mod cancel_orders;
@@ -8,6 +9,7 @@ pub mod client;
 pub mod contract_expiry_type;
 pub mod create_order;
 pub mod create_order_request;
+pub mod edit_history;
 pub mod edit_order;
 pub mod edit_order_error;
 pub mod edit_order_request;
@@ -22,6 +24,8 @@ pub mod limit_limit_gtd;
 pub mod maintenance;
 pub mod market_trades;
 pub mod market_market_ioc;
+pub mod order;
+pub mod orders;
 pub mod order_configuration;
 pub mod order_error_response;
 pub mod order_success_response;
@@ -67,6 +71,7 @@ pub use reqwest;
 pub mod prelude {
     pub use crate::account::Account;
     pub use crate::accounts::Accounts;
+    pub use crate::balance::Balance;
     pub use crate::bid_ask::BidAsk;
     pub use crate::cancel_order::CancelOrder;
     pub use crate::cancel_orders::CancelOrders;
@@ -75,6 +80,7 @@ pub mod prelude {
     pub use crate::contract_expiry_type::ContractExpiryType;
     pub use crate::create_order::CreateOrder;
     pub use crate::create_order_request::CreateOrderRequest;
+    pub use crate::edit_history::EditHistory;
     pub use crate::edit_order::EditOrder;
     pub use crate::edit_order_error::EditOrderError;
     pub use crate::edit_order_request::EditOrderRequest;
@@ -89,6 +95,8 @@ pub mod prelude {
     pub use crate::maintenance::Maintenance;
     pub use crate::market_trades::MarketTrades;
     pub use crate::market_market_ioc::MarketMarketIoc;
+    pub use crate::order::Order;
+    pub use crate::orders::Orders;
     pub use crate::order_configuration::OrderConfiguration;
     pub use crate::order_error_response::OrderErrorResponse;
     pub use crate::order_success_response::OrderSuccessResponse;

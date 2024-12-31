@@ -1,4 +1,4 @@
-use chrono::{ DateTime, Local };
+use chrono::{ DateTime, Utc };
 use serde_derive::Deserialize;
 
 use crate::perpetual_details::PerpetualDetails;
@@ -7,7 +7,7 @@ use crate::perpetual_details::PerpetualDetails;
 pub struct FutureProductDetails {
     pub venue: Option<String>,
     pub contract_code: Option<String>,
-    pub contract_expiry: Option<DateTime<Local>>,
+    pub contract_expiry: Option<DateTime<Utc>>,
     pub contract_size: Option<String>,
     pub contract_root_unit: Option<String>,
     pub group_description: Option<String>,
