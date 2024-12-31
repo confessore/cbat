@@ -22,6 +22,4 @@ jobs:
           CBAT_KEY_SECRET: ${{ secrets.CBAT_KEY_SECRET }}
         run: |
           docker swarm init
-          echo "$CBAT_KEY_NAME" | docker secret create CBAT_KEY_NAME -
-          echo "$CBAT_KEY_SECRET" | docker secret create CBAT_KEY_SECRET -
           docker build --secret id=CBAT_KEY_NAME --secret id=CBAT_KEY_SECRET -t cbat:latest .
