@@ -1,6 +1,6 @@
 [package]
 name = "cbat"
-description = "The unofficial Rust client library for the Coinbase Advanced Trade API"
+description = "The unofficial Rust crate for the Coinbase Advanced Trade API"
 version = "0.0.6"
 edition = "2021"
 documentation = "https://docs.rs/cbat"
