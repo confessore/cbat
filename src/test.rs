@@ -261,7 +261,7 @@ pub async fn create_edit_cancel_order_test() {
     };
     let create_order = ApiOrders::create_order(&client, request).await;
     assert_eq!(create_order.is_ok(), true);
-    std::thread::sleep(std::time::Duration::from_millis(250));
+    std::thread::sleep(std::time::Duration::from_millis(100));
 
     let order_id = create_order.unwrap().success_response.order_id;
     let request = PreviewEditOrderRequest {
@@ -271,7 +271,7 @@ pub async fn create_edit_cancel_order_test() {
     };
     let preview_edit_order = ApiOrders::preview_edit_order(&client, request).await;
     assert_eq!(preview_edit_order.is_ok(), true);
-    std::thread::sleep(std::time::Duration::from_millis(250));
+    std::thread::sleep(std::time::Duration::from_millis(100));
 
     let request = EditOrderRequest {
         order_id: &order_id,
@@ -280,7 +280,7 @@ pub async fn create_edit_cancel_order_test() {
     };
     let edit_order = ApiOrders::edit_order(&client, request).await;
     assert_eq!(edit_order.is_ok(), true);
-    std::thread::sleep(std::time::Duration::from_millis(250));
+    std::thread::sleep(std::time::Duration::from_millis(100));
 
     let cancel_orders = ApiOrders::cancel_orders(&client, vec![&order_id]).await;
     assert_eq!(cancel_orders.is_ok(), true);
