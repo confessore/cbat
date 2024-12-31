@@ -8,6 +8,7 @@ use crate::{
     http_method::HttpMethod,
     order_placement_source::OrderPlacementSource,
     order_side::OrderSide,
+    orders::Orders,
     prelude::ContractExpiryType,
     preview_edit_order::PreviewEditOrder,
     preview_edit_order_request::PreviewEditOrderRequest,
@@ -118,7 +119,7 @@ impl ApiOrders {
         cursor: Option<&str>,
         sort_by: Option<SortBy>,
         user_native_currency: Option<&str>
-    ) -> Result<reqwest::Response, reqwest::Error> {
+    ) -> Result<Orders, reqwest::Error> {
         let mut query_params = Vec::new();
 
         if let Some(order_ids) = order_ids {
@@ -211,7 +212,35 @@ impl ApiOrders {
             url,
             &create_jwt(HttpMethod::Get.as_str(), LIST_ORDERS_ENDPOINT)
         ).await?;
-        Ok(response)
+        let orders: Orders = response.json().await?;
+        Ok(orders)
+    }
+
+    pub async fn get_order(
+        client: &Client<'_>,
+        order_id: &str,
+        client_order_id: Option<&str>,
+        user_native_currency: Option<&str>
+    ) -> Result<Orders, reqwest::Error> {
+        let mut query_params = Vec::new();
+        if let Some(client_order_id) = client_order_id {
+            query_params.push(format!("client_order_id={}", client_order_id));
+        }
+        if let Some(user_native_currency) = user_native_currency {
+            query_params.push(format!("user_native_currency={}", user_native_currency));
+        }
+        let query_string = if query_params.is_empty() {
+            String::new()
+        } else {
+            format!("?{}", query_params.join("&"))
+        };
+        let url = &format!("{}/{}{}", GET_ORDER_URL, order_id, query_string);
+        let response = client.get_auth(
+            url,
+            &create_jwt(HttpMethod::Get.as_str(), &format!("{}/{}", GET_ORDER_ENDPOINT, order_id))
+        ).await?;
+        let orders: Orders = response.json().await?;
+        Ok(orders)
     }
 }
 
@@ -228,3 +257,5 @@ const EDIT_ORDER_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/e
 const EDIT_ORDER_ENDPOINT: &str = "/api/v3/brokerage/orders/edit";
 const LIST_ORDERS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/historical/batch";
 const LIST_ORDERS_ENDPOINT: &str = "/api/v3/brokerage/orders/historical/batch";
+const GET_ORDER_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/historical";
+const GET_ORDER_ENDPOINT: &str = "/api/v3/brokerage/orders/historical";

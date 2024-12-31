@@ -300,6 +300,10 @@ pub async fn create_edit_cancel_order_test() {
     assert_eq!(edit_order.is_ok(), true);
     std::thread::sleep(std::time::Duration::from_millis(100));
 
+    let order = ApiOrders::get_order(&client, &order_id, None, None).await;
+    assert_eq!(order.is_ok(), true);
+    std::thread::sleep(std::time::Duration::from_millis(100));
+
     let cancel_orders = ApiOrders::cancel_orders(&client, vec![&order_id]).await;
     assert_eq!(cancel_orders.is_ok(), true);
 }

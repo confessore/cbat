@@ -36,13 +36,7 @@ pub struct Order {
     pub is_liquidation: bool,
     pub last_fill_time: Option<String>, // RFC3339 Timestamp
     pub edit_history: Option<Vec<EditHistory>>,
-    pub price: Option<String>,
-    pub size: Option<String>,
-    pub replace_accept_timestamp: Option<String>, // RFC3339 Timestamp
     pub leverage: Option<String>,
     pub margin_type: Option<String>, // Possible values: [CROSS, ISOLATED]
     pub retail_portfolio_id: Option<String>,
-    pub sequence: Option<i64>, // Deprecated
-    pub has_next: bool,
-    pub cursor: Option<String>,
 }
