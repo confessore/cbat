@@ -204,13 +204,52 @@ pub async fn portfolios_test() {
 }
 
 #[tokio::test]
-pub async fn create_then_cancel_order_test() {
+pub async fn preview_order_test() {
+    use crate::{
+        client::Client,
+        preview_order_request::PreviewOrderRequest,
+        api_orders::ApiOrders,
+        order_configuration::OrderConfiguration,
+        limit_limit_gtc::LimitLimitGtc,
+    };
+    let client = Client::new(EXAMPLE);
+    let request = PreviewOrderRequest {
+        product_id: "BTC-USD",
+        side: "SELL",
+        order_configuration: OrderConfiguration {
+            market_market_ioc: None,
+            limit_limit_fok: None,
+            limit_limit_gtd: None,
+            limit_limit_gtc: Some(LimitLimitGtc {
+                quote_size: None,
+                base_size: Some("0.001".to_string()),
+                limit_price: Some("999999.0".to_string()),
+                post_only: None,
+            }),
+            sor_limit_ioc: None,
+            stop_limit_stop_limit_gtc: None,
+            stop_limit_stop_limit_gtd: None,
+            trigger_bracket_gtc: None,
+            trigger_bracket_gtd: None,
+        },
+        leverage: None,
+        margin_type: None,
+        retail_portfolio_id: None,
+    };
+    let preview_order = ApiOrders::preview_order(&client, request).await;
+    assert_eq!(preview_order.is_ok(), true);
+}
+
+#[tokio::test]
+pub async fn create_edit_cancel_order_test() {
     use crate::{
         client::Client,
         create_order_request::CreateOrderRequest,
         api_orders::ApiOrders,
         order_configuration::OrderConfiguration,
         limit_limit_gtc::LimitLimitGtc,
+        preview_edit_order_request::PreviewEditOrderRequest,
+        edit_order_request::EditOrderRequest,
     };
     let client = Client::new(EXAMPLE);
     let request = CreateOrderRequest {
@@ -241,6 +280,20 @@ pub async fn create_then_cancel_order_test() {
     let create_order = ApiOrders::create_order(&client, request).await;
     assert_eq!(create_order.is_ok(), true);
     let order_id = create_order.unwrap().success_response.order_id;
+    let request = PreviewEditOrderRequest {
+        order_id: &order_id,
+        price: "999998.0",
+        size: "0.001",
+    };
+    let preview_edit_order = ApiOrders::preview_edit_order(&client, request).await;
+    assert_eq!(preview_edit_order.is_ok(), true);
+    let request = EditOrderRequest {
+        order_id: &order_id,
+        price: "999998.0",
+        size: "0.001",
+    };
+    let edit_order = ApiOrders::edit_order(&client, request).await;
+    assert_eq!(edit_order.is_ok(), true);
     let cancel_orders = ApiOrders::cancel_orders(&client, vec![&order_id]).await;
     assert_eq!(cancel_orders.is_ok(), true);
 }
