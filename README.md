@@ -1,4 +1,15 @@
-Welcome to the unofficial Rust crate for the Coinbase Advanced Trade API
+# Welcome to the unofficial Rust crate for the Coinbase Advanced Trade API
+<p align="center">
+    <a href="https://crates.io/crates/cbat" title="crates.io version.">
+        <img src="https://img.shields.io/crates/v/cbat?style=for-the-badge&logoColor=89b4fa&labelColor=11111b&color=89b4fa"
+            alt="crates.io version"></a>
+    <a href="https://crates.io/crates/cbat" title="crates.io download counter.">
+        <img src="https://img.shields.io/crates/d/cbat?style=for-the-badge&logoColor=89dceb&labelColor=11111b&color=89dceb"
+            alt="crates.io downloads"></a>
+    <a href="https://github.com/confessore/cbat" title="Size of the repo!">
+        <img src="https://img.shields.io/github/repo-size/confessore/cbat?style=for-the-badge&logoColor=a6e3a1&labelColor=11111b&color=a6e3a1"
+            alt="GitHub repo size"></a>
+</p>
 
 Set your environment variables
 

@@ -1,7 +1,7 @@
 [package]
 name = "cbat"
 description = "The unofficial Rust crate for the Coinbase Advanced Trade API"
-version = "0.0.14"
+version = "0.0.15"
 edition = "2021"
 documentation = "https://docs.rs/cbat"
 repository = "https://github.com/confessore/cbat"
