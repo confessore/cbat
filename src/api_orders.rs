@@ -246,7 +246,15 @@ impl ApiOrders {
 
     pub async fn list_fills(
         client: &Client<'_>,
-        order_ids: Option<Vec<&str>>
+        order_ids: Option<Vec<&str>>,
+        trade_ids: Option<Vec<&str>>,
+        product_ids: Option<Vec<&str>>,
+        start_sequence_timestamp: Option<DateTime<Utc>>,
+        end_sequence_timestamp: Option<DateTime<Utc>>,
+        retail_portfolio_id: Option<&str>,
+        limit: Option<u64>,
+        cursor: Option<&str>,
+        sort_by: Option<SortBy>
     ) -> Result<Fills, reqwest::Error> {
         let mut query_params = Vec::new();
         if let Some(order_ids) = order_ids {
@@ -254,9 +262,34 @@ impl ApiOrders {
                 query_params.push(format!("order_ids={}", order_id));
             }
         }
-        // if let Some(client_order_id) = client_order_id {
-        //     query_params.push(format!("client_order_id={}", client_order_id));
-        // }
+        if let Some(trade_ids) = trade_ids {
+            for trade_id in trade_ids {
+                query_params.push(format!("trade_ids={}", trade_id));
+            }
+        }
+        if let Some(product_ids) = product_ids {
+            for product_id in product_ids {
+                query_params.push(format!("product_ids={}", product_id));
+            }
+        }
+        if let Some(start_sequence_timestamp) = start_sequence_timestamp {
+            query_params.push(format!("start_sequence_timestamp={}", start_sequence_timestamp));
+        }
+        if let Some(end_sequence_timestamp) = end_sequence_timestamp {
+            query_params.push(format!("end_sequence_timestamp={}", end_sequence_timestamp));
+        }
+        if let Some(retail_portfolio_id) = retail_portfolio_id {
+            query_params.push(format!("retail_portfolio_id={}", retail_portfolio_id));
+        }
+        if let Some(limit) = limit {
+            query_params.push(format!("limit={}", limit));
+        }
+        if let Some(cursor) = cursor {
+            query_params.push(format!("cursor={}", cursor));
+        }
+        if let Some(sort_by) = sort_by {
+            query_params.push(format!("sort_by={}", sort_by));
+        }
         let query_string = if query_params.is_empty() {
             String::new()
         } else {

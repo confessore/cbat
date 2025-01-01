@@ -339,7 +339,18 @@ pub async fn list_orders_test() {
 pub async fn list_fills_test() {
     use crate::{ client::Client, api_orders::ApiOrders };
     let client = Client::new(EXAMPLE);
-    let fills = ApiOrders::list_fills(&client, None).await;
+    let fills = ApiOrders::list_fills(
+        &client,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        Some(1),
+        None,
+        None
+    ).await;
     assert_eq!(fills.is_ok(), true);
 }
 
