@@ -15,6 +15,8 @@ pub mod edit_order_error;
 pub mod edit_order_request;
 pub mod expiring_contract_status;
 pub mod fcm_trading_session_details;
+pub mod fill;
+pub mod fills;
 pub mod future_product_details;
 pub mod granularity;
 pub mod http_method;
@@ -89,6 +91,8 @@ pub mod prelude {
     pub use crate::edit_order_request::EditOrderRequest;
     pub use crate::expiring_contract_status::ExpiringContractStatus;
     pub use crate::fcm_trading_session_details::FCMTradingSessionDetails;
+    pub use crate::fill::Fill;
+    pub use crate::fills::Fills;
     pub use crate::future_product_details::FutureProductDetails;
     pub use crate::granularity::Granularity;
     pub use crate::http_method::HttpMethod;

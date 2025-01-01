@@ -5,6 +5,7 @@ use crate::{
     create_order_request::CreateOrderRequest,
     edit_order::EditOrder,
     edit_order_request::EditOrderRequest,
+    fills::Fills,
     http_method::HttpMethod,
     order_placement_source::OrderPlacementSource,
     order_side::OrderSide,
@@ -242,6 +243,33 @@ impl ApiOrders {
         let orders: Orders = response.json().await?;
         Ok(orders)
     }
+
+    pub async fn list_fills(
+        client: &Client<'_>,
+        order_ids: Option<Vec<&str>>
+    ) -> Result<Fills, reqwest::Error> {
+        let mut query_params = Vec::new();
+        if let Some(order_ids) = order_ids {
+            for order_id in order_ids {
+                query_params.push(format!("order_ids={}", order_id));
+            }
+        }
+        // if let Some(client_order_id) = client_order_id {
+        //     query_params.push(format!("client_order_id={}", client_order_id));
+        // }
+        let query_string = if query_params.is_empty() {
+            String::new()
+        } else {
+            format!("?{}", query_params.join("&"))
+        };
+        let url = &format!("{}{}", LIST_FILLS_URL, query_string);
+        let response = client.get_auth(
+            url,
+            &create_jwt(HttpMethod::Get.as_str(), LIST_FILLS_ENDPOINT)
+        ).await?;
+        let orders: Fills = response.json().await?;
+        Ok(orders)
+    }
 }
 
 const CANCEL_ORDERS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/batch_cancel";
@@ -259,3 +287,5 @@ const LIST_ORDERS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/
 const LIST_ORDERS_ENDPOINT: &str = "/api/v3/brokerage/orders/historical/batch";
 const GET_ORDER_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/historical";
 const GET_ORDER_ENDPOINT: &str = "/api/v3/brokerage/orders/historical";
+const LIST_FILLS_URL: &str = "https://api.coinbase.com/api/v3/brokerage/orders/historical/fills";
+const LIST_FILLS_ENDPOINT: &str = "/api/v3/brokerage/orders/historical/fills";

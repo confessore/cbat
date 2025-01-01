@@ -316,3 +316,11 @@ pub async fn list_orders_test() {
     ).await;
     assert_eq!(orders.is_ok(), true);
 }
+
+#[tokio::test]
+pub async fn list_fills_test() {
+    use crate::{ client::Client, api_orders::ApiOrders };
+    let client = Client::new(EXAMPLE);
+    let fills = ApiOrders::list_fills(&client, None).await;
+    assert_eq!(fills.is_ok(), true);
+}
