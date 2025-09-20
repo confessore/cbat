@@ -1,5 +1,5 @@
 use crate::{
-    client::{ create_jwt, Client },
+    client::Client,
     http_method::HttpMethod,
     portfolio_type::PortfolioType,
     portfolios::Portfolios,
@@ -19,7 +19,7 @@ impl ApiPortfolios {
         let url = &format!("{}{}", PORTFOLIOS_URL, portfolio_type);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), PORTFOLIOS_ENDPOINT)
+            &client.create_jwt(HttpMethod::Get.as_str(), PORTFOLIOS_ENDPOINT)
         ).await?;
         let portfolios: Portfolios = response.json().await?;
         Ok(portfolios)

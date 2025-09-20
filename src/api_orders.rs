@@ -1,6 +1,6 @@
 use crate::{
     cancel_orders::CancelOrders,
-    client::{ create_jwt, Client },
+    client::Client,
     create_order::CreateOrder,
     create_order_request::CreateOrderRequest,
     edit_order::EditOrder,
@@ -34,7 +34,7 @@ impl ApiOrders {
         let url = &format!("{}", CANCEL_ORDERS_URL);
         let response = client.post_auth(
             url,
-            &create_jwt(HttpMethod::Post.as_str(), CANCEL_ORDERS_ENDPOINT),
+            &client.create_jwt(HttpMethod::Post.as_str(), CANCEL_ORDERS_ENDPOINT),
             &data.to_string()
         ).await?;
         let cancel_orders: CancelOrders = response.json().await?;
@@ -49,7 +49,7 @@ impl ApiOrders {
         let url = &format!("{}", CREATE_ORDER_URL);
         let response = client.post_auth(
             url,
-            &create_jwt(HttpMethod::Post.as_str(), CREATE_ORDER_ENDPOINT),
+            &client.create_jwt(HttpMethod::Post.as_str(), CREATE_ORDER_ENDPOINT),
             &data.to_string()
         ).await?;
         let create_order: CreateOrder = response.json().await?;
@@ -64,7 +64,7 @@ impl ApiOrders {
         let url = &format!("{}", PREVIEW_ORDER_URL);
         let response = client.post_auth(
             url,
-            &create_jwt(HttpMethod::Post.as_str(), PREVIEW_ORDER_ENDPOINT),
+            &client.create_jwt(HttpMethod::Post.as_str(), PREVIEW_ORDER_ENDPOINT),
             &data.to_string()
         ).await?;
         let preview_order: PreviewOrder = response.json().await?;
@@ -79,7 +79,7 @@ impl ApiOrders {
         let url = &format!("{}", PREVIEW_EDIT_ORDER_URL);
         let response = client.post_auth(
             url,
-            &create_jwt(HttpMethod::Post.as_str(), PREVIEW_EDIT_ORDER_ENDPOINT),
+            &client.create_jwt(HttpMethod::Post.as_str(), PREVIEW_EDIT_ORDER_ENDPOINT),
             &data.to_string()
         ).await?;
         let preview_edit_order: PreviewEditOrder = response.json().await?;
@@ -94,7 +94,7 @@ impl ApiOrders {
         let url = &format!("{}", EDIT_ORDER_URL);
         let response = client.post_auth(
             url,
-            &create_jwt(HttpMethod::Post.as_str(), EDIT_ORDER_ENDPOINT),
+            &client.create_jwt(HttpMethod::Post.as_str(), EDIT_ORDER_ENDPOINT),
             &data.to_string()
         ).await?;
         let edit_order: EditOrder = response.json().await?;
@@ -211,7 +211,7 @@ impl ApiOrders {
         let url = &format!("{}{}", LIST_ORDERS_URL, query_string);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), LIST_ORDERS_ENDPOINT)
+            &client.create_jwt(HttpMethod::Get.as_str(), LIST_ORDERS_ENDPOINT)
         ).await?;
         let orders: Orders = response.json().await?;
         Ok(orders)
@@ -238,7 +238,10 @@ impl ApiOrders {
         let url = &format!("{}/{}{}", GET_ORDER_URL, order_id, query_string);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), &format!("{}/{}", GET_ORDER_ENDPOINT, order_id))
+            &client.create_jwt(
+                HttpMethod::Get.as_str(),
+                &format!("{}/{}", GET_ORDER_ENDPOINT, order_id)
+            )
         ).await?;
         let orders: Orders = response.json().await?;
         Ok(orders)
@@ -298,7 +301,7 @@ impl ApiOrders {
         let url = &format!("{}{}", LIST_FILLS_URL, query_string);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), LIST_FILLS_ENDPOINT)
+            &client.create_jwt(HttpMethod::Get.as_str(), LIST_FILLS_ENDPOINT)
         ).await?;
         let orders: Fills = response.json().await?;
         Ok(orders)

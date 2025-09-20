@@ -1,4 +1,4 @@
-use crate::{ accounts::Accounts, client::{ create_jwt, Client }, http_method::HttpMethod };
+use crate::{ accounts::Accounts, client::Client, http_method::HttpMethod };
 
 pub struct ApiAccounts;
 
@@ -7,7 +7,7 @@ impl ApiAccounts {
         let url = &format!("{}", ACCOUNTS_URL);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), ACCOUNTS_ENDPOINT)
+            &client.create_jwt(HttpMethod::Get.as_str(), ACCOUNTS_ENDPOINT)
         ).await?;
         let accounts: Accounts = response.json().await?;
         Ok(accounts)
@@ -20,7 +20,7 @@ impl ApiAccounts {
         let url = &format!("{}/{}", ACCOUNTS_URL, account_uuid);
         let response = client.get_auth(
             url,
-            &create_jwt(
+            &client.create_jwt(
                 HttpMethod::Get.as_str(),
                 &format!("{}/{}", ACCOUNTS_ENDPOINT, account_uuid)
             )

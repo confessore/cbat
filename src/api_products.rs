@@ -1,5 +1,5 @@
 use crate::{
-    client::{ create_jwt, Client },
+    client::Client,
     contract_expiry_type::ContractExpiryType,
     expiring_contract_status::ExpiringContractStatus,
     granularity::Granularity,
@@ -32,7 +32,7 @@ impl ApiProducts {
         let url = &format!("{}{}", BEST_BID_ASK_URL, query_string);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), BEST_BID_ASK_ENDPOINT)
+            &client.create_jwt(HttpMethod::Get.as_str(), BEST_BID_ASK_ENDPOINT)
         ).await?;
         let price_books: PriceBooks = response.json().await?;
         Ok(price_books)
@@ -62,7 +62,7 @@ impl ApiProducts {
         let url = &format!("{}{}", PRODUCT_BOOK_URL, query_string);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), PRODUCT_BOOK_ENDPOINT)
+            &client.create_jwt(HttpMethod::Get.as_str(), PRODUCT_BOOK_ENDPOINT)
         ).await?;
         let price_books: PriceBooks = response.json().await?;
         Ok(price_books)
@@ -114,7 +114,7 @@ impl ApiProducts {
         let url = &format!("{}{}", PRODUCTS_URL, query_string);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), PRODUCTS_ENDPOINT)
+            &client.create_jwt(HttpMethod::Get.as_str(), PRODUCTS_ENDPOINT)
         ).await?;
         let products: Products = response.json().await?;
         Ok(products)
@@ -133,7 +133,10 @@ impl ApiProducts {
         let url = &format!("{}/{}{}", PRODUCTS_URL, product_id, get_tradability_status);
         let response = client.get_auth(
             url,
-            &create_jwt(HttpMethod::Get.as_str(), &format!("{}/{}", PRODUCTS_ENDPOINT, product_id))
+            &client.create_jwt(
+                HttpMethod::Get.as_str(),
+                &format!("{}/{}", PRODUCTS_ENDPOINT, product_id)
+            )
         ).await?;
         let products: Product = response.json().await?;
         Ok(products)
@@ -163,7 +166,7 @@ impl ApiProducts {
         );
         let response = client.get_auth(
             url,
-            &create_jwt(
+            &client.create_jwt(
                 HttpMethod::Get.as_str(),
                 &format!("{}/{}/candles", PRODUCTS_ENDPOINT, product_id)
             )
@@ -197,7 +200,7 @@ impl ApiProducts {
         );
         let response = client.get_auth(
             url,
-            &create_jwt(
+            &client.create_jwt(
                 HttpMethod::Get.as_str(),
                 &format!("{}/{}/ticker", MARKET_TRADES_ENDPOINT, product_id)
             )

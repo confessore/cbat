@@ -7,13 +7,17 @@ use serde::Serialize;
 pub struct Client<'a> {
     pub name: &'a str,
     client: reqwest::Client,
+    pub key_name: String,
+    pub key_secret: String,
 }
 
-impl<'a> Client<'_> {
-    pub fn new(name: &'a str) -> Client<'a> {
+impl<'a> Client<'a> {
+    pub fn new(name: &'a str, key_name: String, key_secret: String) -> Client<'a> {
         Client {
             name,
             client: reqwest::Client::new(),
+            key_name,
+            key_secret,
         }
     }
 
@@ -107,40 +111,41 @@ struct Claims {
     nonce: String,
 }
 
-pub fn create_jwt(request_method: &str, request_path: &str) -> String {
-    let key_name = std::env
-        ::var("CBAT_KEY_NAME")
-        .expect("CBAT_KEY_NAME environment variable not set");
-    let key_secret = std::env
-        ::var("CBAT_KEY_SECRET")
-        .expect("CBAT_KEY_SECRET environment variable not set");
-    let uri = format!("{} {}{}", request_method, BASE_URL, request_path);
+// `create_jwt` is provided as a method on `Client` so callers supply
+// the key material instead of reading from the process environment.
 
-    let mut rng = rand::thread_rng();
-    let nonce: String = (0..16)
-        .map(|_| rng.sample(rand::distributions::Alphanumeric) as char)
-        .collect();
+impl<'a> Client<'a> {
+    pub fn create_jwt(&self, request_method: &str, request_path: &str) -> String {
+        let key_name = &self.key_name;
+        let key_secret = &self.key_secret;
+        let uri = format!("{} {}{}", request_method, BASE_URL, request_path);
 
-    let now = Utc::now();
-    let claims = Claims {
-        sub: key_name.to_owned(),
-        iss: "cdp".to_owned(),
-        nbf: now.timestamp(),
-        exp: (now + Duration::seconds(60)).timestamp(),
-        uri,
-        kid: key_name.to_owned(),
-        nonce,
-    };
-    let header = Header {
-        alg: Algorithm::ES256,
-        kid: Some(key_name.to_owned()),
-        ..Default::default()
-    };
-    let key_secret = key_secret.replace("\\n", "\n");
-    let pem = from_sec1_pem(&key_secret);
-    let key = EncodingKey::from_ec_pem(pem.as_bytes()).expect("Invalid EC key");
-    let jwt = encode(&header, &claims, &key).unwrap();
-    jwt
+        let mut rng = rand::thread_rng();
+        let nonce: String = (0..16)
+            .map(|_| rng.sample(rand::distributions::Alphanumeric) as char)
+            .collect();
+
+        let now = Utc::now();
+        let claims = Claims {
+            sub: key_name.to_owned(),
+            iss: "cdp".to_owned(),
+            nbf: now.timestamp(),
+            exp: (now + Duration::seconds(60)).timestamp(),
+            uri,
+            kid: key_name.to_owned(),
+            nonce,
+        };
+        let header = Header {
+            alg: Algorithm::ES256,
+            kid: Some(key_name.to_owned()),
+            ..Default::default()
+        };
+        let key_secret = key_secret.replace("\\n", "\n");
+        let pem = from_sec1_pem(&key_secret);
+        let key = EncodingKey::from_ec_pem(pem.as_bytes()).expect("Invalid EC key");
+        let jwt = encode(&header, &claims, &key).unwrap();
+        jwt
+    }
 }
 
 fn from_sec1_pem(pem: &str) -> String {
