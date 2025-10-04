@@ -1,14 +1,8 @@
 use crate::{
-    client::Client,
-    contract_expiry_type::ContractExpiryType,
-    expiring_contract_status::ExpiringContractStatus,
-    granularity::Granularity,
-    market_trades::MarketTrades,
-    product::Product,
-    product_book::ProductBook,
-    product_candles::ProductCandles,
-    product_type::ProductType,
-    products::Products,
+    client::Client, contract_expiry_type::ContractExpiryType,
+    expiring_contract_status::ExpiringContractStatus, granularity::Granularity,
+    market_trades::MarketTrades, product::Product, product_book::ProductBook,
+    product_candles::ProductCandles, product_type::ProductType, products::Products,
     server_time::ServerTime,
 };
 
@@ -20,7 +14,7 @@ impl ApiPublic {
         product_id: &str,
         limit: u32,
         start: Option<String>,
-        end: Option<String>
+        end: Option<String>,
     ) -> Result<MarketTrades, reqwest::Error> {
         let start = match start {
             Some(start) => &format!("&start={}", start),
@@ -32,11 +26,7 @@ impl ApiPublic {
         };
         let url = &format!(
             "{}/{}/ticker?limit={}{}{}",
-            PUBLIC_MARKET_TRADES_URL,
-            product_id,
-            limit,
-            start,
-            end
+            PUBLIC_MARKET_TRADES_URL, product_id, limit, start, end
         );
         let response = client.get(url).await?;
         let market_trades: MarketTrades = response.json().await?;
@@ -47,23 +37,22 @@ impl ApiPublic {
         client: &Client<'_>,
         product_id: &str,
         limit: Option<u32>,
-        aggregation_price_increment: Option<&str>
+        aggregation_price_increment: Option<&str>,
     ) -> Result<ProductBook, reqwest::Error> {
         let limit = match limit {
             Some(limit) => &format!("&limit={}", limit),
             None => "",
         };
         let aggregation_price_increment = match aggregation_price_increment {
-            Some(aggregation_price_increment) =>
-                &format!("&aggregation_price_increment={}", aggregation_price_increment),
+            Some(aggregation_price_increment) => &format!(
+                "&aggregation_price_increment={}",
+                aggregation_price_increment
+            ),
             None => "",
         };
         let url = &format!(
             "{}?product_id={}{}{}",
-            PUBLIC_PRODUCT_BOOK_URL,
-            product_id,
-            limit,
-            aggregation_price_increment
+            PUBLIC_PRODUCT_BOOK_URL, product_id, limit, aggregation_price_increment
         );
         let response = client.get(url).await?;
         let product: ProductBook = response.json().await?;
@@ -76,7 +65,7 @@ impl ApiPublic {
         start: &str,
         end: &str,
         granularity: Granularity,
-        limit: Option<u32>
+        limit: Option<u32>,
     ) -> Result<ProductCandles, reqwest::Error> {
         let limit = match limit {
             Some(limit) => &format!("&limit={}", limit),
@@ -85,12 +74,7 @@ impl ApiPublic {
 
         let url = &format!(
             "{}/{}/candles?start={}&end={}&granularity={}{}",
-            PUBLIC_PRODUCTS_URL,
-            product_id,
-            start,
-            end,
-            granularity,
-            limit
+            PUBLIC_PRODUCTS_URL, product_id, start, end, granularity, limit
         );
         let response = client.get(url).await?;
         let product_candles: ProductCandles = response.json().await?;
@@ -99,7 +83,7 @@ impl ApiPublic {
 
     pub async fn get_public_product(
         client: &Client<'_>,
-        product_id: &str
+        product_id: &str,
     ) -> Result<Product, reqwest::Error> {
         let url = &format!("{}/{}", PUBLIC_PRODUCTS_URL, product_id);
         let response = client.get(url).await?;
@@ -114,7 +98,7 @@ impl ApiPublic {
         product_ids: Option<Vec<&str>>,
         contract_expiry_type: Option<ContractExpiryType>,
         expiring_contract_status: Option<ExpiringContractStatus>,
-        get_all_products: Option<bool>
+        get_all_products: Option<bool>,
     ) -> Result<Products, reqwest::Error> {
         let mut query_params = Vec::new();
 
@@ -141,7 +125,10 @@ impl ApiPublic {
         }
 
         if let Some(expiring_contract_status) = expiring_contract_status {
-            query_params.push(format!("expiring_contract_status={}", expiring_contract_status));
+            query_params.push(format!(
+                "expiring_contract_status={}",
+                expiring_contract_status
+            ));
         }
 
         if let Some(get_all_products) = get_all_products {

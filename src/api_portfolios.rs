@@ -1,8 +1,5 @@
 use crate::{
-    client::Client,
-    http_method::HttpMethod,
-    portfolio_type::PortfolioType,
-    portfolios::Portfolios,
+    client::Client, http_method::HttpMethod, portfolio_type::PortfolioType, portfolios::Portfolios,
 };
 
 pub struct ApiPortfolios;
@@ -10,17 +7,19 @@ pub struct ApiPortfolios;
 impl ApiPortfolios {
     pub async fn list_portfolios(
         client: &Client<'_>,
-        portfolio_type: Option<PortfolioType>
+        portfolio_type: Option<PortfolioType>,
     ) -> Result<Portfolios, reqwest::Error> {
         let portfolio_type = match portfolio_type {
             Some(portfolio_type) => &format!("?portfolio_type={}", portfolio_type),
             None => "",
         };
         let url = &format!("{}{}", PORTFOLIOS_URL, portfolio_type);
-        let response = client.get_auth(
-            url,
-            &client.create_jwt(HttpMethod::Get.as_str(), PORTFOLIOS_ENDPOINT)
-        ).await?;
+        let response = client
+            .get_auth(
+                url,
+                &client.create_jwt(HttpMethod::Get.as_str(), PORTFOLIOS_ENDPOINT),
+            )
+            .await?;
         let portfolios: Portfolios = response.json().await?;
         Ok(portfolios)
     }

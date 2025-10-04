@@ -1,9 +1,9 @@
-use chrono::{ DateTime, Utc };
-use serde_derive::Deserialize;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 use crate::bid_ask::BidAsk;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PriceBook {
     pub product_id: String,
     pub bids: Vec<BidAsk>,

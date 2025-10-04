@@ -1,9 +1,9 @@
-use chrono::{ DateTime, Utc };
-use serde_derive::Deserialize;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 use crate::maintenance::Maintenance;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FCMTradingSessionDetails {
     pub is_session_open: Option<bool>,
     pub open_time: Option<DateTime<Utc>>,

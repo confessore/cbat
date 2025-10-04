@@ -1,18 +1,14 @@
-use serde::{ Deserialize, Serialize };
+use serde::{Deserialize, Serialize};
 
 use crate::{
-    limit_limit_fok::LimitLimitFok,
-    limit_limit_gtc::LimitLimitGtc,
-    limit_limit_gtd::LimitLimitGtd,
-    market_market_ioc::MarketMarketIoc,
-    sor_limit_ioc::SorLimitIoc,
+    limit_limit_fok::LimitLimitFok, limit_limit_gtc::LimitLimitGtc, limit_limit_gtd::LimitLimitGtd,
+    market_market_ioc::MarketMarketIoc, sor_limit_ioc::SorLimitIoc,
     stop_limit_stop_limit_gtc::StopLimitStopLimitGtc,
-    stop_limit_stop_limit_gtd::StopLimitStopLimitGtd,
-    trigger_bracket_gtc::TriggerBracketGtc,
+    stop_limit_stop_limit_gtd::StopLimitStopLimitGtd, trigger_bracket_gtc::TriggerBracketGtc,
     trigger_bracket_gtd::TriggerBracketGtd,
 };
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct OrderConfiguration {
     pub market_market_ioc: Option<MarketMarketIoc>,
     pub sor_limit_ioc: Option<SorLimitIoc>,

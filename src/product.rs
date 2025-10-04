@@ -1,11 +1,11 @@
-use serde_derive::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     fcm_trading_session_details::FCMTradingSessionDetails,
     future_product_details::FutureProductDetails,
 };
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Product {
     pub product_id: String,
     pub price: String,

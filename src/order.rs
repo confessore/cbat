@@ -1,8 +1,8 @@
-use serde::{ Deserialize, Serialize };
+use serde::{Deserialize, Serialize};
 
-use crate::{ order_configuration::OrderConfiguration, prelude::EditHistory };
+use crate::{order_configuration::OrderConfiguration, prelude::EditHistory};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Order {
     pub order_id: String,
     pub product_id: String,
@@ -12,7 +12,7 @@ pub struct Order {
     pub client_order_id: String,
     pub status: String, // Possible values: [PENDING, OPEN, FILLED, CANCELLED, EXPIRED, FAILED, UNKNOWN_ORDER_STATUS, QUEUED, CANCEL_QUEUED]
     pub time_in_force: Option<String>, // Possible values: [UNKNOWN_TIME_IN_FORCE, GOOD_UNTIL_DATE_TIME, GOOD_UNTIL_CANCELLED, IMMEDIATE_OR_CANCEL, FILL_OR_KILL]
-    pub created_time: String, // RFC3339 Timestamp
+    pub created_time: String,          // RFC3339 Timestamp
     pub completion_percentage: String,
     pub filled_size: Option<String>,
     pub average_filled_price: String,

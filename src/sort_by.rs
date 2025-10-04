@@ -1,6 +1,7 @@
-use std::fmt::{ Display, Formatter, Result };
+use serde::{Deserialize, Serialize};
+use std::fmt::{Display, Formatter, Result};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum SortBy {
     UnknownSortBy,
     LimitPrice,

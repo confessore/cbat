@@ -1,7 +1,7 @@
-use serde_derive::Deserialize;
+use serde::{Deserialize, Serialize};
 
 #[allow(non_snake_case)]
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ServerTime {
     pub iso: Option<String>,
     pub epochSeconds: Option<String>,

@@ -1,8 +1,8 @@
-use serde::{ Deserialize, Serialize };
+use serde::{Deserialize, Serialize};
 
 use crate::preview_edit_order_error::PreviewEditOrderError;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PreviewEditOrder {
     pub errors: Vec<PreviewEditOrderError>,
     pub slippage: Option<String>,

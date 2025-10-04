@@ -1,30 +1,34 @@
-use crate::{ accounts::Accounts, client::Client, http_method::HttpMethod };
+use crate::{accounts::Accounts, client::Client, http_method::HttpMethod};
 
 pub struct ApiAccounts;
 
 impl ApiAccounts {
     pub async fn list_accounts(client: &Client<'_>) -> Result<Accounts, reqwest::Error> {
         let url = &format!("{}", ACCOUNTS_URL);
-        let response = client.get_auth(
-            url,
-            &client.create_jwt(HttpMethod::Get.as_str(), ACCOUNTS_ENDPOINT)
-        ).await?;
+        let response = client
+            .get_auth(
+                url,
+                &client.create_jwt(HttpMethod::Get.as_str(), ACCOUNTS_ENDPOINT),
+            )
+            .await?;
         let accounts: Accounts = response.json().await?;
         Ok(accounts)
     }
 
     pub async fn get_account(
         client: &Client<'_>,
-        account_uuid: &str
+        account_uuid: &str,
     ) -> Result<Accounts, reqwest::Error> {
         let url = &format!("{}/{}", ACCOUNTS_URL, account_uuid);
-        let response = client.get_auth(
-            url,
-            &client.create_jwt(
-                HttpMethod::Get.as_str(),
-                &format!("{}/{}", ACCOUNTS_ENDPOINT, account_uuid)
+        let response = client
+            .get_auth(
+                url,
+                &client.create_jwt(
+                    HttpMethod::Get.as_str(),
+                    &format!("{}/{}", ACCOUNTS_ENDPOINT, account_uuid),
+                ),
             )
-        ).await?;
+            .await?;
         let accounts: Accounts = response.json().await?;
         Ok(accounts)
     }

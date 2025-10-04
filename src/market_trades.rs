@@ -1,8 +1,8 @@
-use serde_derive::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::trade::Trade;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct MarketTrades {
     pub trades: Option<Vec<Trade>>,
     pub best_bid: Option<String>,

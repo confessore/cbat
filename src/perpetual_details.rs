@@ -1,7 +1,7 @@
-use chrono::{ DateTime, Utc };
-use serde_derive::Deserialize;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PerpetualDetails {
     pub open_interest: Option<String>,
     pub funding_rate: Option<String>,

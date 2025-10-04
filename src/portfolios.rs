@@ -1,7 +1,8 @@
-use serde_derive::Deserialize;
+use serde::{Deserialize, Serialize};
+
 use crate::portfolio::Portfolio;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Portfolios {
     pub portfolios: Option<Vec<Portfolio>>,
 }

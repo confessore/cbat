@@ -1,8 +1,8 @@
-use serde::{ Deserialize, Serialize };
+use serde::{Deserialize, Serialize};
 
 use crate::order_configuration::OrderConfiguration;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct CreateOrderRequest<'a> {
     pub client_order_id: &'a str,
     pub product_id: &'a str,

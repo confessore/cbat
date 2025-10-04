@@ -1,9 +1,9 @@
-use chrono::{ DateTime, Utc };
-use serde_derive::Deserialize;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 use crate::perpetual_details::PerpetualDetails;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FutureProductDetails {
     pub venue: Option<String>,
     pub contract_code: Option<String>,

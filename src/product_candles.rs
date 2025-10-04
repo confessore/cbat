@@ -1,8 +1,8 @@
-use serde_derive::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::candle::Candle;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ProductCandles {
     pub candles: Option<Vec<Candle>>,
 }

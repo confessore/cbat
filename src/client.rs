@@ -1,6 +1,6 @@
 use chrono::{ Duration, Utc };
 use jsonwebtoken::{ encode, Algorithm, EncodingKey, Header };
-use rand::Rng;
+use rand::{ distr::Alphanumeric, Rng };
 use sec1::{ pkcs8::LineEnding, DecodeEcPrivateKey };
 use serde::Serialize;
 
@@ -120,10 +120,8 @@ impl<'a> Client<'a> {
         let key_secret = &self.key_secret;
         let uri = format!("{} {}{}", request_method, BASE_URL, request_path);
 
-        let mut rng = rand::thread_rng();
-        let nonce: String = (0..16)
-            .map(|_| rng.sample(rand::distributions::Alphanumeric) as char)
-            .collect();
+        let mut rng = rand::rng();
+        let nonce: String = (0..16).map(|_| rng.sample(Alphanumeric) as char).collect();
 
         let now = Utc::now();
         let claims = Claims {

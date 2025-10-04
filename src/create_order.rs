@@ -1,11 +1,10 @@
-use serde::{ Deserialize, Serialize };
+use serde::{Deserialize, Serialize};
 
 use crate::{
-    order_error_response::OrderErrorResponse,
-    order_success_response::OrderSuccessResponse,
+    order_error_response::OrderErrorResponse, order_success_response::OrderSuccessResponse,
 };
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct CreateOrder {
     pub success: bool,
     pub success_response: OrderSuccessResponse,
